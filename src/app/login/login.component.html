@@ -1,0 +1,67 @@
+<mat-card class="login-card">
+    <mat-tab-group>
+        <mat-tab label="Connexion">
+            <mat-card-content class="content">
+                <form ngForm class="login-form">
+                    <mat-form-field>
+                        <mat-label>Nom d'utilisateur</mat-label>
+                        <input [(ngModel)]="loginForm.username" matInput name="username" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Mot de passe</mat-label>
+                        <input [(ngModel)]="loginForm.password" matInput name="password" required
+                            [type]="hidePassword ? 'password' : 'text'">
+                        <mat-icon class="visibility-icon" matSuffix (click)="hidePassword = !hidePassword">
+                            {{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary" class="submit-button" (click)="login()"
+                        [disabled]="loginForm.isInvalid()">
+                        Connexion
+                    </button>
+
+                </form>
+            </mat-card-content>
+        </mat-tab>
+        <mat-tab label="Inscription">
+            <mat-card-content class="content">
+                <form ngForm class="login-form">
+                    <mat-form-field>
+                        <mat-label>Nom d'utilisateur</mat-label>
+                        <input [(ngModel)]="signupForm.username" matInput name="username" minlength="8"
+                            [formControl]="signupForm.usernameControl" required />
+                        <mat-error *ngIf="signupForm.usernameControl.invalid">{{signupForm.getErrorMessage('username')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Mot de passe</mat-label>
+                        <input [(ngModel)]="signupForm.password" matInput minlength="8" required
+                            [formControl]="signupForm.passwordControl" [type]="hidePassword ? 'password' : 'text'"
+                            name="password">
+                        <mat-icon class="visibility-icon" matSuffix (click)="hidePassword = !hidePassword">
+                            {{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-error *ngIf="signupForm.passwordControl.invalid">{{signupForm.getErrorMessage('password')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Confirmer le mot de passe</mat-label>
+                        <input [(ngModel)]="signupForm.confirmPassword" matInput required
+                            [formControl]="signupForm.confirmPasswordControl" [type]="hidePassword ? 'password' : 'text'"
+                            name="confirmPassword">
+                        <mat-icon class="visibility-icon" matSuffix (click)="hidePassword = !hidePassword">
+                            {{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-error>{{signupForm.getErrorMessage('confirmPassword')}}</mat-error>
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary" class="submit-button" (click)="signup()"
+                        [disabled]="signupForm.isInvalid()">
+                        Inscription
+                    </button>
+                </form>
+            </mat-card-content>
+        </mat-tab>
+    </mat-tab-group>
+</mat-card>
