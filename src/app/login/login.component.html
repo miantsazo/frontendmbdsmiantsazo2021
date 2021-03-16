@@ -26,38 +26,39 @@
         </mat-tab>
         <mat-tab label="Inscription">
             <mat-card-content class="content">
-                <form ngForm class="login-form">
+                <form ngForm class="login-form" [formGroup]="signupForm" (submit)="signup()">
                     <mat-form-field>
                         <mat-label>Nom d'utilisateur</mat-label>
-                        <input [(ngModel)]="signupForm.username" matInput name="username" minlength="8"
-                            [formControl]="signupForm.usernameControl" required />
-                        <mat-error *ngIf="signupForm.usernameControl.invalid">{{signupForm.getErrorMessage('username')}}
+                        <input matInput formControlName="username" required />
+                        <mat-error *ngIf="signupSubmitted && f.username.errors">
+                            {{getErrorMessages('username',f.username.errors)}}
                         </mat-error>
+
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Mot de passe</mat-label>
-                        <input [(ngModel)]="signupForm.password" matInput minlength="8" required
-                            [formControl]="signupForm.passwordControl" [type]="hidePassword ? 'password' : 'text'"
-                            name="password">
+                        <input matInput minlength="8" formControlName="password" required
+                            [type]="hidePassword ? 'password' : 'text'">
                         <mat-icon class="visibility-icon" matSuffix (click)="hidePassword = !hidePassword">
                             {{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        <mat-error *ngIf="signupForm.passwordControl.invalid">{{signupForm.getErrorMessage('password')}}
+                        <mat-error *ngIf="signupSubmitted && f.password.errors">
+                            {{getErrorMessages('password',f.password.errors)}}
                         </mat-error>
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Confirmer le mot de passe</mat-label>
-                        <input [(ngModel)]="signupForm.confirmPassword" matInput required
-                            [formControl]="signupForm.confirmPasswordControl" [type]="hidePassword ? 'password' : 'text'"
-                            name="confirmPassword">
+                        <input matInput formControlName="confirmPassword"
+                            [type]="hidePassword ? 'password' : 'text'">
                         <mat-icon class="visibility-icon" matSuffix (click)="hidePassword = !hidePassword">
                             {{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        <mat-error>{{signupForm.getErrorMessage('confirmPassword')}}</mat-error>
+                        <mat-error *ngIf="signupSubmitted && f.confirmPassword.errors">
+                            {{getErrorMessages('confirmPassword',f.confirmPassword.errors)}}
+                        </mat-error>
                     </mat-form-field>
 
-                    <button mat-raised-button color="primary" class="submit-button" (click)="signup()"
-                        [disabled]="signupForm.isInvalid()">
+                    <button mat-raised-button color="primary" class="submit-button">
                         Inscription
                     </button>
                 </form>

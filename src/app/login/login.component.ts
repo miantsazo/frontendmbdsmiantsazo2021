@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { GetErrorMessage, MatchPassordValidator, NotOnlySpaceValidator } from '../utils/value-control';
 
 @Component({
   selector: 'app-login',
@@ -8,26 +9,42 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   hidePassword: boolean = true;
-  signupForm: SignupForm;
+  signupForm: FormGroup;
+  signupSubmitted = false;
   loginForm: LoginForm;
+  loginSubmitted = false;
 
-
-  constructor() { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.signupForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(6), NotOnlySpaceValidator]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validator: MatchPassordValidator('password', 'confirmPassword')
+    });
     this.loginForm = new LoginForm();
-    this.signupForm = new SignupForm();
+  }
+
+  get f() { return this.signupForm.controls; }
+
+  getErrorMessages(field: string, type: any) {
+    return GetErrorMessage(field, type);
   }
 
   login() {
-    // const username = this.loginForm.username;
-    // const password = this.loginForm.password; 
+
   }
 
   signup() {
-    console.log(this.signupForm)
+    this.signupSubmitted = true;
+    if (this.signupForm.invalid) {
+      return;
+    }
+    // appel api du back
+    this.signupSubmitted = false;
   }
-
 }
 class LoginForm {
   username: string = null;
@@ -35,48 +52,6 @@ class LoginForm {
 
   isInvalid(): boolean {
     return this.username == '' || this.password == '' || this.username == null || this.password == null
-  }
-
-}
-class SignupForm extends LoginForm {
-  confirmPassword: string = null;
-
-  usernameControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
-  passwordControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
-  confirmPasswordControl = new FormControl('', [Validators.required]);
-
-  isInvalid(): boolean {
-    return this.username == '' || this.password == '' || this.username == null || this.password == null
-      || this.password !== this.confirmPassword || this.username.length < 8 || this.password.length < 8 || this.username.match(/^ *$/) !== null;
-  }
-
-  getErrorMessage(field: string) {
-    if (field === 'username') {
-      // console.log(this.username.match(/^ *$/) !== null)
-      if (this.usernameControl.hasError('required')) {
-        return 'Nom d\'utilisateur obligatoire';
-      } else if (this.usernameControl.hasError('minlength')) {
-        return 'Le nom d\'utilisateur doit comporter au moins 8 caractères';
-      } else if(this.username.match(/^ *$/) !== null) {
-        console.log("espace");
-        return 'Le nom d\'utilisateur ne peut pas être composé uniquement d\'espace';
-      }
-    }
-    if (field === 'password') {
-      if (this.passwordControl.hasError('required')) {
-        return 'Mot de passe obligatoire';
-      } else if (this.passwordControl.hasError('minlength')) {
-        return 'Le mot de passe doit comporter au moins 8 caractères';
-      }
-    }
-    if (field === 'confirmPassword') {      
-      if (this.password !== this.confirmPassword) {
-        console.log("non identiques : " + this.password + " - " + this.confirmPassword);
-        return 'Les mots de passe ne sont pas identiques';
-      }
-    }
-
-    return '';
   }
 
 }
