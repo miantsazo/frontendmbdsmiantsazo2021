@@ -30,6 +30,20 @@ export function GetErrorMessage(field: string, type: any) {
             return 'Le nom d\'utilisateur n\'est pas valide ';
         }
     }
+    if (field === 'lastname') {
+        if (type.required) {
+            return 'Nom obligatoire';
+        } else if (type.onlySpaceDetected) {
+            return 'Nom non valide ';
+        }
+    }
+    if (field === 'firstname') {
+        if (type.required) {
+            return 'Prénom obligatoire';
+        }else if (type.onlySpaceDetected) {
+            return 'Prénom non valide ';
+        }
+    }
     if (field === 'password') {
         if (type.required) {
             return 'Mot de passe obligatoire';

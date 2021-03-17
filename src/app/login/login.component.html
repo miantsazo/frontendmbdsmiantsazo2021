@@ -28,6 +28,22 @@
             <mat-card-content class="content">
                 <form ngForm class="login-form" [formGroup]="signupForm" (submit)="signup()">
                     <mat-form-field>
+                        <mat-label>Nom</mat-label>
+                        <input matInput formControlName="lastname" required />
+                        <mat-error *ngIf="signupSubmitted && f.lastname.errors">
+                            {{getErrorMessages('lastname',f.lastname.errors)}}
+                        </mat-error>
+
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Prénoms</mat-label>
+                        <input matInput formControlName="firstname" required />
+                        <mat-error *ngIf="signupSubmitted && f.firstname.errors">
+                            {{getErrorMessages('firstname',f.firstname.errors)}}
+                        </mat-error>
+
+                    </mat-form-field>
+                    <mat-form-field>
                         <mat-label>Nom d'utilisateur</mat-label>
                         <input matInput formControlName="username" required />
                         <mat-error *ngIf="signupSubmitted && f.username.errors">
@@ -35,7 +51,7 @@
                         </mat-error>
 
                     </mat-form-field>
-
+                    
                     <mat-form-field>
                         <mat-label>Mot de passe</mat-label>
                         <input matInput minlength="8" formControlName="password" required

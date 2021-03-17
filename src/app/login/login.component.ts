@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../shared/auth.service';
 import { GetErrorMessage, MatchPassordValidator, NotOnlySpaceValidator } from '../utils/value-control';
+import { User } from './user.model';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +17,14 @@ export class LoginComponent implements OnInit {
   loginForm: LoginForm;
   loginSubmitted = false;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.signupForm = this.formBuilder.group({
+      lastname: ['', [Validators.required, Validators.minLength(6), NotOnlySpaceValidator]],
+      firstname: ['', [Validators.required, Validators.minLength(6), NotOnlySpaceValidator]],
       username: ['', [Validators.required, Validators.minLength(6), NotOnlySpaceValidator]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
@@ -42,6 +49,16 @@ export class LoginComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     }
+    let user = new User();
+    let formValue = this.signupForm.value;
+    user.firstname = formValue.firstname;
+    user.lastname = formValue.lastname;
+    user.username = formValue.username;
+    user.password = formValue.password;
+    this.authService.signup(user).subscribe(response => {
+      console.log(response);
+    })
+    
     // appel api du back
     this.signupSubmitted = false;
   }

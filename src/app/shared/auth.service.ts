@@ -1,28 +1,21 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '../login/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  loggedIn = false;
+  private isAuthenticated = false;
+  private token: string;
+  private tokenTimer: any;
+  private userId: string;
   admin = false;
 
-  constructor() {}
+  uri = "http://localhost:8010/api";
 
-  logIn(login, password) {
-    // typiquement, acceptera en paramètres un login et un password
-    // vérifier qu'ils sont ok, et si oui, positionner la propriété loggedIn à true
-    // si login/password non valides, positionner à false;
-
-    if (login === 'admin') this.admin = true;
-
-    this.loggedIn = true;
-  }
-
-  logOut() {
-    this.loggedIn = false;
-    this.admin = false;
-  }
+  constructor(private http: HttpClient) { }
 
   // exemple d'utilisation :
   // isAdmin.then(admin => { console.log("administrateur : " + admin);})
@@ -31,4 +24,29 @@ export class AuthService {
       resolve(this.admin);
     });
   }
+
+  getToken() {
+    return this.token;
+  }
+
+  getIsAuth() {
+    return this.isAuthenticated;
+  }
+
+  getUserId() {
+    return this.userId;
+  }
+
+  signup(user: User): Observable<any> {
+    return this.http.post(`${this.uri}/signup`, user);
+  }
+
+  logIn(username: String, password: String) {
+    
+  }
+
+  logout() {
+    
+  }
+
 }
