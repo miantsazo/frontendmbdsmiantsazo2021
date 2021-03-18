@@ -35,7 +35,7 @@ export class EditAssigmentComponent implements OnInit {
   getAssignmentById() {
     // les params sont des string, on va forcer la conversion
     // en number en mettant un "+" devant
-    const id: number = +this.route.snapshot.params.id;
+    const id: string = this.route.snapshot.params.id;
 
     console.log('Dans ngOnInit de details, id = ' + id);
     this.assignmentsService.getAssignment(id).subscribe((assignment) => {

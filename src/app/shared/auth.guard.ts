@@ -23,7 +23,6 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    //return true;
     // on n'autorisera l'activation de la route associée que si on est
     // bien un admin
     return this.authService.isAdmin().then((admin) => {

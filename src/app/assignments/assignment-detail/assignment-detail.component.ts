@@ -25,13 +25,11 @@ export class AssignmentDetailComponent implements OnInit {
   }
 
   getAssignmentById() {
-    // les params sont des string, on va forcer la conversion
-    // en number en mettant un "+" devant
-    const id: number = +this.route.snapshot.params.id;
-
-    console.log('Dans ngOnInit de details, id = ' + id);
+    const id: string = this.route.snapshot.params.id;
+    
     this.assignmentsService.getAssignment(id).subscribe((assignment) => {
       this.assignmentTransmis = assignment;
+      console.log(this.assignmentTransmis);
     });
   }
 

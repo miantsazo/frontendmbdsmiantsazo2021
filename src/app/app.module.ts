@@ -15,6 +15,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs'; 
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { RenduDirective } from './shared/rendu.directive';
@@ -25,9 +26,10 @@ import { AddAssignmentComponent } from './assignments/add-assignment/add-assignm
 import { Routes, RouterModule } from '@angular/router';
 import { EditAssigmentComponent } from './assignments/edit-assigment/edit-assigment.component';
 import { AuthGuard } from './shared/auth.guard';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UsersComponent } from './users/users.component';
 import { LoginComponent } from './login/login.component';
+import { TokenInterceptor } from './shared/token.interceptor';
 
 
 const routes:Routes = [
@@ -75,10 +77,16 @@ const routes:Routes = [
     MatButtonModule, MatDividerModule, MatIconModule,
     MatFormFieldModule, MatInputModule, MatDatepickerModule,
     MatNativeDateModule, MatListModule, MatCardModule, MatCheckboxModule,
-    MatSlideToggleModule, MatTabsModule,
+    MatSlideToggleModule, MatTabsModule, MatSnackBarModule,
     RouterModule.forRoot(routes), HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide : HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi   : true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

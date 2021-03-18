@@ -7,10 +7,6 @@ import { User } from '../login/user.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private isAuthenticated = false;
-  private token: string;
-  private tokenTimer: any;
-  private userId: string;
   admin = false;
 
   uri = "http://localhost:8010/api";
@@ -25,16 +21,12 @@ export class AuthService {
     });
   }
 
+  isLoggedIn() {
+    return localStorage.getItem('token') !== null ? true : false;
+  }
+
   getToken() {
-    return this.token;
-  }
-
-  getIsAuth() {
-    return this.isAuthenticated;
-  }
-
-  getUserId() {
-    return this.userId;
+    return localStorage.getItem('token');
   }
 
   signup(user: User): Observable<any> {
@@ -42,7 +34,9 @@ export class AuthService {
   }
 
   logIn(username: String, password: String) {
-    
+    return this.http.post<{token:string; expiresIn:Number,userId:string}>(
+      `${this.uri}/login`, {username: username, password: password}
+    );
   }
 
   logout() {

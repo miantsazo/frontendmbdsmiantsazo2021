@@ -25,7 +25,6 @@ export class AssignmentsComponent implements OnInit {
               private router:Router) {}
 
   ngOnInit() {
-    console.log('AVANT AFFICHAGE');
     // on regarde s'il y a page= et limit = dans l'URL
     this.route.queryParams.subscribe(queryParams => {
       console.log("Dans le subscribe des queryParams")
@@ -34,13 +33,13 @@ export class AssignmentsComponent implements OnInit {
 
       this.getAssignments();
     });
-      console.log("getAssignments() du service appelé");
   }
 
   getAssignments() {
     this.assignmentsService.getAssignmentsPagine(this.page, this.limit)
     .subscribe(data => {
       this.assignments = data.docs;
+      console.log(this.assignments);
       this.page = data.page;
       this.limit = data.limit;
       this.totalDocs = data.totalDocs;
@@ -49,7 +48,6 @@ export class AssignmentsComponent implements OnInit {
       this.prevPage = data.prevPage;
       this.hasNextPage = data.hasNextPage;
       this.nextPage = data.nextPage;
-      console.log("données reçues");
     });
   }
 

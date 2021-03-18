@@ -23,13 +23,21 @@
 
   <mat-list *ngFor="let a of assignments">
     <nav>
-      <a routerLink="/assignment/{{a.id}}">
+      <a routerLink="/assignment/{{a._id}}">
         <h3 mat-subheader>{{a.dateDeRendu | date}}</h3>
-        <mat-list-item>
+        <!-- <mat-list-item> -->
           <mat-divider></mat-divider>
-
           <p *ngIf="a.rendu; else nonsoumis" appRendu>
-            {{a.nom}}, rendu par l'élève.
+            Exercice : {{a.nom}}
+          </p>
+          <p>
+            Matière : {{a.matiere[0].libelle}}
+          </p>
+          <p>
+            Prof : {{a.prof[0].prenom + " " + a.prof[0].nom}}
+          </p>
+          <p>
+            Elève: {{a.auteur}}
           </p>
           <ng-template #nonsoumis>
             <p appNonRendu>
@@ -37,7 +45,7 @@
             </p>
           </ng-template>
 
-        </mat-list-item>
+        <!-- </mat-list-item> -->
       </a>
     </nav>
   </mat-list>
