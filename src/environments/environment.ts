@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8010/api'
+  apiUrl: 'https://backmbdsmiantsazo2021.herokuapp.com/api'
+  // apiUrl: 'http://localhost:8010/api'
 };
 
 /*
