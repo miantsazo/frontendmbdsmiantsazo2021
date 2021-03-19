@@ -1,5 +1,21 @@
-.form {
-  display:flex;
+.nextBtn {
+  align-self: flex-end;
+}
+
+.container {
+  display: flex;
   flex-direction: column;
-  margin:5px;
+}
+
+.fill {
+  width: 100%;
+}
+
+.inline-block {
+  flex-direction: column;
+  margin: 10px;
+}
+
+.mat-form-field {
+  margin-right: 15px;
 }

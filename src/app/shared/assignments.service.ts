@@ -5,6 +5,8 @@ import { catchError, filter, map, tap } from "rxjs/operators";
 import { Assignment } from "../assignments/assignment.model";
 import { LoggingService } from "./logging.service";
 import { assignmentsGeneres } from "./data";
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: "root",
@@ -15,18 +17,17 @@ export class AssignmentsService {
   constructor(
     private loggingService: LoggingService,
     private http: HttpClient
-  ) {}
+  ) { }
 
-  // uri = "http://localhost:8010/api/assignments";
-  uri = "https://backmbdsmiantsazo2021.herokuapp.com/api/assignments";
+  uri = environment.apiUrl + "/assignments";
+  // uri = "https://backmbdsmiantsazo2021.herokuapp.com/api/assignments";
 
   getAssignments(): Observable<Assignment[]> {
-    console.log("Dans le service de gestion des assignments...");
-    //return of(this.assignments);
     return this.http.get<Assignment[]>(this.uri);
   }
 
   getAssignmentsPagine(page: number, limit: number): Observable<any> {
+    console.log(this.uri);
     return this.http.get<Assignment[]>(
       this.uri + "?page=" + page + "&limit=" + limit
     );
@@ -43,26 +44,6 @@ export class AssignmentsService {
 
   getAssignment(id: string): Observable<Assignment> {
     return this.http.get<Assignment>(this.uri + "/" + id);
-    // .pipe(
-    //   // traitement 1
-    //   map((a) => {
-    //     a.nom += " MODIFIE PAR MAP";
-    //     return a;
-    //   }),
-    //   tap((a) => {
-    //     console.log("TRACE DANS TAP : j'ai reçu " + a.nom);
-    //   }),
-    //   /*
-    //   filter(a => {
-    //     return (a.rendu)
-    //   })
-    //   */
-    //   catchError(
-    //     this.handleError<any>(
-    //       "### catchError: getAssignments by id avec id=" + id
-    //     )
-    //   )
-    // );
   }
 
   private handleError<T>(operation: any, result?: T) {
@@ -103,14 +84,6 @@ export class AssignmentsService {
   }
 
   deleteAssignment(assignment: Assignment): Observable<any> {
-    /*
-    let index = this.assignments.indexOf(assignment);
-
-    this.assignments.splice(index, 1);
-    */
-
-    this.loggingService.log(assignment.nom, " a été supprimé");
-
     return this.http.delete(this.uri + "/" + assignment._id);
   }
 

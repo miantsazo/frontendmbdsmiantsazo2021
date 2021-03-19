@@ -16,6 +16,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs'; 
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatSelectModule} from '@angular/material/select';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { RenduDirective } from './shared/rendu.directive';
@@ -77,7 +80,8 @@ const routes:Routes = [
     MatButtonModule, MatDividerModule, MatIconModule,
     MatFormFieldModule, MatInputModule, MatDatepickerModule,
     MatNativeDateModule, MatListModule, MatCardModule, MatCheckboxModule,
-    MatSlideToggleModule, MatTabsModule, MatSnackBarModule,
+    MatSlideToggleModule, MatTabsModule, MatSnackBarModule, MatStepperModule,
+    MatSelectModule, MatGridListModule,
     RouterModule.forRoot(routes), HttpClientModule
   ],
   providers: [

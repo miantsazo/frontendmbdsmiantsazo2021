@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../login/user.model';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +11,8 @@ import { User } from '../login/user.model';
 export class AuthService {
   admin = false;
 
-  uri = "http://localhost:8010/api";
+  uri = environment.apiUrl;;
+  // uri = "https://backmbdsmiantsazo2021.herokuapp.com/api";
 
   constructor(private http: HttpClient) { }
 
