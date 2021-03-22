@@ -31,10 +31,10 @@
             Exercice : {{a.nom}}
           </p>
           <p>
-            Matière : {{a.matiere[0].libelle}}
+            Matière : {{a.matiere[0]?.libelle}}
           </p>
           <p>
-            Prof : {{a.prof[0].prenom + " " + a.prof[0].nom}}
+            Prof : {{a.prof[0]?.prenom + " " + a.prof[0]?.nom}}
           </p>
           <p>
             Elève: {{a.auteur}}

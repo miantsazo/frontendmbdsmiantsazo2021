@@ -27,15 +27,14 @@
         <ng-template matStepLabel>Informations sur le devoir</ng-template>
         <mat-form-field class="fill">
           <mat-label>Nom du devoir</mat-label>
-          <input matInput formControlName="assignmentName" required>
+          <input matInput formControlName="assignmentName" [(ngModel)]="assignment.nom" required>
           <mat-error>{{errorMessage}}</mat-error>
         </mat-form-field>
 
         <mat-form-field style="width: 50%;">
           <mat-label>Matière</mat-label>
-          <mat-select formControlName="matiere" required>
-            <mat-option value="one">First option</mat-option>
-            <mat-option value="two">Second option</mat-option>
+          <mat-select formControlName="matiere" [(ngModel)]="assignment.matiere" required>
+            <mat-option *ngFor="let matiere of matieres" [value]="matiere">{{matiere.libelle}}</mat-option>
           </mat-select>
           <mat-error>{{errorMessage}}</mat-error>
         </mat-form-field>
@@ -52,25 +51,27 @@
         </ng-template>
         <mat-form-field class="fill">
           <mat-label>Elève</mat-label>
-          <input matInput formControlName="studentName">
+          <input matInput formControlName="studentName" [(ngModel)]="assignment.auteur">
           <mat-error>{{errorMessage}}</mat-error>
         </mat-form-field>
         <mat-form-field style="width: 50%;">
           <mat-label>Choisissez une date</mat-label>
-          <input matInput [matDatepicker]="picker" name="date" formControlName="dateDeRendu">
+          <input matInput [matDatepicker]="picker" name="date" formControlName="dateDeRendu"
+            [(ngModel)]="assignment.dateDeRendu">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        
+
         <mat-form-field>
           <mat-label>Note</mat-label>
-          <input matInput type="number" min="0" max="20" step="0.5" formControlName="note">
+          <input matInput type="number" min="0" max="20" step="0.5" formControlName="note"
+            [(ngModel)]="assignment.note">
           <span matSuffix>/20</span>
         </mat-form-field>
         <div>
           <mat-form-field class="fill">
             <mat-label>Remarques</mat-label>
-            <textarea matInput formControlName="remarque"></textarea>
+            <textarea matInput formControlName="remarque" [(ngModel)]="assignment.remarques"></textarea>
           </mat-form-field>
         </div>
         <div>
@@ -89,9 +90,26 @@
 
       <mat-step>
         <ng-template matStepLabel>Confirmation</ng-template>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>assignment</mat-icon> {{assignment?.matiere?.libelle}} - {{assignment.nom}}
+            </mat-card-title>
+            <mat-card-subtitle>Professeur: {{assignment.matiere?.prof[0]?.prenom}} {{assignment.matiere?.prof[0]?.nom}}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <p> Elève : {{assignment.auteur}} </p>
+            <p> Date de rendu : {{assignment.dateDeRendu | date}} </p>
+            <p> Note : {{assignment.note}} </p>
+            <p> Remarques : {{assignment.remarques}} </p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card-actions>
+          <button mat-button (click)="onSubmit($event)">Add assignment</button>
+        </mat-card-actions>
         <div>
-          <button mat-button>Done</button>
-          <button type="button" mat-button (click)="linearVerticalStepper.reset()">Reset</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

@@ -39,7 +39,6 @@ export class AssignmentDetailComponent implements OnInit {
     this.assignmentsService
       .updateAssignment(this.assignmentTransmis)
       .subscribe((reponse) => {
-        console.log(reponse.message);
         // et on navigue vers la page d'accueil qui affiche la liste
         this.router.navigate(['/home']);
       });
@@ -51,7 +50,6 @@ export class AssignmentDetailComponent implements OnInit {
     this.assignmentsService
       .deleteAssignment(this.assignmentTransmis)
       .subscribe((reponse) => {
-        console.log(reponse.message);
 
         // on cache l'affichage du détail
         this.assignmentTransmis = null;
