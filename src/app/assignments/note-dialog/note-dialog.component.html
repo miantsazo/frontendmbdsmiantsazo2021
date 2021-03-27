@@ -1,0 +1,24 @@
+<form ngForm [formGroup]="noteForm">
+    <h1 mat-dialog-title>{{assignment.nom}}</h1>
+    <div mat-dialog-content>
+        <p>{{assignment.auteur}}</p>
+        <mat-form-field style="width: 45%; margin-right: 10px;">
+            <mat-label>Date de rendu</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field style="width: 45%;">
+            <mat-label>Note</mat-label>
+            <input matInput type="number" formControlName="note">
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+            <mat-label>Remarques</mat-label>
+            <textarea matInput formControlName="remarques"></textarea>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="true">Cancel</button>
+        <button mat-button (click)="confirm()">Confirm</button>
+    </div>
+</form>

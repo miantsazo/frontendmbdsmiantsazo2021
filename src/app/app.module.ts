@@ -19,6 +19,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatSelectModule} from '@angular/material/select';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { RenduDirective } from './shared/rendu.directive';
@@ -33,6 +34,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UsersComponent } from './users/users.component';
 import { LoginComponent } from './login/login.component';
 import { TokenInterceptor } from './shared/token.interceptor';
+import { NoteDialogComponent } from './assignments/note-dialog/note-dialog.component';
 
 
 const routes:Routes = [
@@ -57,8 +59,8 @@ const routes:Routes = [
   },
   {
     path:"assignment/:id/edit",
-    component:EditAssigmentComponent,
-    canActivate : [AuthGuard]
+    component:AddAssignmentComponent,
+    //canActivate : [AuthGuard]
   }
 ]
 @NgModule({
@@ -71,7 +73,8 @@ const routes:Routes = [
     AddAssignmentComponent,
     EditAssigmentComponent,
     UsersComponent,
-    LoginComponent
+    LoginComponent,
+    NoteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +84,7 @@ const routes:Routes = [
     MatFormFieldModule, MatInputModule, MatDatepickerModule,
     MatNativeDateModule, MatListModule, MatCardModule, MatCheckboxModule,
     MatSlideToggleModule, MatTabsModule, MatSnackBarModule, MatStepperModule,
-    MatSelectModule, MatGridListModule,
+    MatSelectModule, MatGridListModule, MatDialogModule,
     RouterModule.forRoot(routes), HttpClientModule
   ],
   providers: [

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Matiere } from 'src/app/matiere.model';
 import { AssignmentsService } from 'src/app/shared/assignments.service';
 import { MatieresService } from 'src/app/shared/matieres.service';
@@ -25,18 +25,30 @@ export class AddAssignmentComponent implements OnInit {
 
   matieres: Matiere[];
 
+  isEdition = false;
+
   /** Returns a FormArray with the name 'formArray'. */
   get formArray(): AbstractControl | null { return this.formGroup.get('formArray'); }
 
   constructor(private assignmentsService: AssignmentsService,
     private router: Router,
     private _formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private matieresService: MatieresService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.assignment = new Assignment();
-    this.assignment.rendu = false;
+    if (this.route.snapshot.params.id) {
+      this.isEdition = true;
+      this.assignmentsService.getAssignment(this.route.snapshot.params.id).subscribe((assignment) => {
+        this.assignment = assignment[0];
+        this.assignment.matiere = assignment[0].matiere[0];
+      });
+    } else {
+      // this.assignment = new Assignment();
+      this.assignment.rendu = false;
+    }
     this.formGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this._formBuilder.group({
@@ -61,23 +73,42 @@ export class AddAssignmentComponent implements OnInit {
   }
 
   onSubmit(event) {
-    if (this.assignment.dateDeRendu !== null && this.assignment.note != null) {
-      this.assignment.rendu = true;
-    }
-
-    this.assignmentsService.addAssignment(this.assignment)
-      .subscribe(response => {
+    if(this.isEdition) {
+      this.assignmentsService.updateAssignment(this.assignment).subscribe(response => {
         this.snackBar.open(response.message, null, {
-          duration: 500,
+          duration: 1000,
           panelClass: ['success-snackbar']
-        }).afterDismissed().subscribe(() => this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['/add']);
-        }));
+        });
       }, responseError => {
         this.snackBar.open(responseError.error.message, null, {
           duration: 1000,
           panelClass: ['error-snackbar']
         });
-      });
+      })
+    } else {
+      if (this.assignment.dateDeRendu !== null && this.assignment.note != null) {
+        this.assignment.rendu = true;
+      }
+  
+      this.assignmentsService.addAssignment(this.assignment)
+        .subscribe(response => {
+          this.snackBar.open(response.message, null, {
+            duration: 500,
+            panelClass: ['success-snackbar']
+          }).afterDismissed().subscribe(() => this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/add']);
+          }));
+        }, responseError => {
+          this.snackBar.open(responseError.error.message, null, {
+            duration: 1000,
+            panelClass: ['error-snackbar']
+          });
+        });
+    }
+
+  }
+
+  compareMatiere(matiere1: Matiere, matiere2: Matiere): boolean {
+    return matiere1._id == matiere2._id;
   }
 }

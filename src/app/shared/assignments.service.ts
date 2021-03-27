@@ -64,14 +64,6 @@ export class AssignmentsService {
   }
 
   updateAssignment(assignment: Assignment): Observable<any> {
-    // besoin de ne rien faire puisque l'assignment passé en paramètre
-    // est déjà un élément du tableau
-
-    //let index = this.assignments.indexOf(assignment);
-
-    //console.log("updateAssignment l'assignment passé en param est à la position " + index + " du tableau");
-    this.loggingService.log(assignment.nom, " a été modifié");
-
     return this.http.put(this.uri, assignment);
   }
 

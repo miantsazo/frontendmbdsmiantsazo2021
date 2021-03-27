@@ -4,18 +4,18 @@
     <mat-card-subtitle>{{assignmentTransmis.dateDeRendu | date}}</mat-card-subtitle>
     <mat-card-subtitle>Elève: {{assignmentTransmis.auteur}}</mat-card-subtitle>
     <mat-card-subtitle>Note: {{assignmentTransmis.note | number}}</mat-card-subtitle>
-    <mat-card-subtitle>Remarques: {{assignmentTransmis.remarques | number}}</mat-card-subtitle>
+    <mat-card-subtitle>Remarques: {{assignmentTransmis.remarques}}</mat-card-subtitle>
     <div id="bottom">
       <mat-checkbox *ngIf="!assignmentTransmis.rendu" (click)="onAssignmentRendu()">
         Rendu
       </mat-checkbox>
       <nav>
-
-          <button [disabled]="!isAdmin()" mat-stroked-button color="primary" (click)="onClickEdit()">EDIT</button>
+          <button mat-stroked-button color="primary" (click)="onClickEdit()">Modifier</button>
+          <button *ngIf="!assignmentTransmis.note" mat-stroked-button color="primary" (click)="openDialog()">Noter</button>
       </nav>
 
 
-      <button mat-stroked-button color="warn" (click)="onDelete()">DELETE</button>
+      <button mat-stroked-button color="warn" (click)="onDelete()">Supprimer</button>
     </div>
   </mat-card>
 </div>

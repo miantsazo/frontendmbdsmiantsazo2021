@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssignmentsService } from 'src/app/shared/assignments.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { Assignment } from '../assignment.model';
+import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -17,8 +20,10 @@ export class AssignmentDetailComponent implements OnInit {
     private assignmentsService: AssignmentsService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService:AuthService
-  ) {}
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.getAssignmentById();
@@ -26,10 +31,8 @@ export class AssignmentDetailComponent implements OnInit {
 
   getAssignmentById() {
     const id: string = this.route.snapshot.params.id;
-    
     this.assignmentsService.getAssignment(id).subscribe((assignment) => {
-      this.assignmentTransmis = assignment;
-      console.log(this.assignmentTransmis);
+      this.assignmentTransmis = assignment[0];
     });
   }
 
@@ -49,28 +52,32 @@ export class AssignmentDetailComponent implements OnInit {
   onDelete() {
     this.assignmentsService
       .deleteAssignment(this.assignmentTransmis)
-      .subscribe((reponse) => {
-
-        // on cache l'affichage du détail
-        this.assignmentTransmis = null;
-
-        // et on navigue vers la page d'accueil qui affiche la liste
-        this.router.navigate(['/home']);
+      .subscribe((response) => {
+        this.snackBar.open(response.message, null, {
+          duration: 500,
+          panelClass: ['succes-snackbar']
+        }).afterDismissed().subscribe(() => this.router.navigate(['/home']))
+      }, responseError => {
+        this.snackBar.open(responseError.error.message, null, {
+          duration: 1000,
+          panelClass: ['error-snackbar']
+        });
       });
   }
 
   onClickEdit() {
-    this.router.navigate(['/assignment', this.assignmentTransmis.id, 'edit'], {
-      queryParams: {
-        nom:'Michel Buffa',
-        metier:"Professeur",
-        responsable:"MIAGE"
-      },
-      fragment:"edition"
-    });
+    this.router.navigate(['/assignment', this.assignmentTransmis._id, 'edit']);
   }
 
   isAdmin() {
     return this.authService.admin;
+  }
+
+  openDialog(): void {
+    this.dialog.open(NoteDialogComponent, {
+      width: '400px',
+      data: { assignment: this.assignmentTransmis }
+    });
+
   }
 }
