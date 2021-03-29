@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   CanActivate,
   ActivatedRouteSnapshot,
@@ -13,7 +14,9 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -23,18 +26,15 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    // on n'autorisera l'activation de la route associée que si on est
-    // bien un admin
-    return this.authService.isAdmin().then((admin) => {
-      if (admin) {
-        console.log("GUARD : vous êtes admin, autorisation accordée")
-        return true;
-      } else {
-        // On renvoie vers la page d'accueil
-        console.log("GUARD : vous n'êtes pas autorisé à naviguer vers EDIT (vous n'êtes pas admin))");
-        this.router.navigate(['/home']);
-        return false;
-      }
-    });
+
+    if (!this.authService.isLoggedIn()) {
+      this.snackBar.open("Veuillez vous connectez", null, {
+        duration: 1000,
+        panelClass: ['error-snackbar']
+      });
+      this.router.navigate(['/']);
+      return false;
+    }
+    return true;
   }
 }

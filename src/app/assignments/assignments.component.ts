@@ -18,6 +18,7 @@ export class AssignmentsComponent implements OnInit {
   prevPage: number;
   hasNextPage: boolean;
   nextPage: number;
+  renduTab: boolean = false;
 
   // on injecte le service de gestion des assignments
   constructor(private assignmentsService:AssignmentsService,
@@ -30,12 +31,12 @@ export class AssignmentsComponent implements OnInit {
       this.page = +queryParams.page || 1;
       this.limit = +queryParams.limit || 10;
 
-      this.getAssignments();
+      this.getAssignments(this.renduTab);
     });
   }
 
-  getAssignments() {
-    this.assignmentsService.getAssignmentsPagine(this.page, this.limit)
+  getAssignments(rendu: boolean) {
+    this.assignmentsService.getAssignmentsPagine(this.page, this.limit, rendu)
     .subscribe(data => {
       this.assignments = data.docs;
       this.page = data.page;
@@ -64,6 +65,7 @@ export class AssignmentsComponent implements OnInit {
       queryParams: {
         page:1,
         limit:this.limit,
+        rendu: this.renduTab
       }
     });
   }
@@ -76,6 +78,7 @@ export class AssignmentsComponent implements OnInit {
       queryParams: {
         page:this.nextPage,
         limit:this.limit,
+        rendu: this.renduTab
       }
     });
   }
@@ -86,6 +89,7 @@ export class AssignmentsComponent implements OnInit {
       queryParams: {
         page:this.prevPage,
         limit:this.limit,
+        rendu: this.renduTab
       }
     });
   }
@@ -95,7 +99,17 @@ export class AssignmentsComponent implements OnInit {
       queryParams: {
         page:this.totalPages,
         limit:this.limit,
+        rendu: this.renduTab
       }
     });
+  }
+
+  onTabClick(event) {
+    if(event.index == 0) {
+      this.renduTab = false
+    } else {
+      this.renduTab = true
+    }
+    this.getAssignments(this.renduTab);
   }
 }

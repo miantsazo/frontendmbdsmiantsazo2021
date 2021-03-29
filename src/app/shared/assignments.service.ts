@@ -26,9 +26,9 @@ export class AssignmentsService {
     return this.http.get<Assignment[]>(this.uri);
   }
 
-  getAssignmentsPagine(page: number, limit: number): Observable<any> {
+  getAssignmentsPagine(page: number, limit: number, rendu: boolean): Observable<any> {
     return this.http.get<Assignment[]>(
-      this.uri + "?page=" + page + "&limit=" + limit
+      this.uri + "?page=" + page + "&limit=" + limit + "&rendu=" + rendu
     );
   }
 

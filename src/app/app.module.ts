@@ -42,25 +42,28 @@ const routes:Routes = [
     // indique que http://localhost:4200 sans rien ou avec un "/" à la fin
     // doit afficher le composant AssignmentsComponent (celui qui affiche la liste)
     path:"",
-    component:LoginComponent
+    component:LoginComponent,
   },
   {
     // idem avec  http://localhost:4200/home
     path:"home",
-    component:AssignmentsComponent
+    component:AssignmentsComponent,
+    canActivate : [AuthGuard]
   },
   {
     path:"add",
-    component:AddAssignmentComponent
+    component:AddAssignmentComponent,
+    canActivate : [AuthGuard]
   },
   {
     path:"assignment/:id",
-    component:AssignmentDetailComponent
+    component:AssignmentDetailComponent,
+    canActivate : [AuthGuard]
   },
   {
     path:"assignment/:id/edit",
     component:AddAssignmentComponent,
-    //canActivate : [AuthGuard]
+    canActivate : [AuthGuard]
   }
 ]
 @NgModule({
