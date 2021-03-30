@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssignmentsService } from '../shared/assignments.service';
 import { Assignment } from './assignment.model';
@@ -23,7 +24,8 @@ export class AssignmentsComponent implements OnInit {
   // on injecte le service de gestion des assignments
   constructor(private assignmentsService:AssignmentsService,
               private route:ActivatedRoute,
-              private router:Router) {}
+              private router:Router,
+              private snackbar: MatSnackBar) {}
 
   ngOnInit() {
     // on regarde s'il y a page= et limit = dans l'URL
@@ -47,6 +49,13 @@ export class AssignmentsComponent implements OnInit {
       this.prevPage = data.prevPage;
       this.hasNextPage = data.hasNextPage;
       this.nextPage = data.nextPage;
+    }, responseError => {
+      localStorage.removeItem('token');
+      this.snackbar.open(responseError.error.message, null, {
+        duration: 1000,
+        panelClass: ['error-snackbar']
+      });
+      this.router.navigate(['/']);
     });
   }
 

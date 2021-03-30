@@ -7,10 +7,16 @@
             <input matInput [matDatepicker]="picker" formControlName="date">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
+            <mat-error>
+                {{getErrorMessages('date',f.date.errors)}}
+            </mat-error>
         </mat-form-field>
         <mat-form-field style="width: 45%;">
             <mat-label>Note</mat-label>
-            <input matInput type="number" formControlName="note">
+            <input matInput type="number" formControlName="note" min="0" max="20">
+            <mat-error>
+                {{getErrorMessages('note',f.note.errors)}}
+            </mat-error>
         </mat-form-field>
         <mat-form-field style="width: 100%;">
             <mat-label>Remarques</mat-label>

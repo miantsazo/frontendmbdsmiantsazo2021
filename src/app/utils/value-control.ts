@@ -21,6 +21,9 @@ export function MatchPassordValidator(controlName: string, matchingControlName: 
 }
 
 export function GetErrorMessage(field: string, type: any) {
+    if(type == null) {
+        return;
+    }
     if (field === 'username') {
         if (type.required) {
             return 'Nom d\'utilisateur obligatoire';
@@ -54,6 +57,22 @@ export function GetErrorMessage(field: string, type: any) {
     if (field === 'confirmPassword') {
         if (type.mustMatch) {
             return 'Les mots de passe ne sont pas identiques';
+        }
+    }
+    if (field === 'date') {
+        if (type.required) {
+            return 'Date obligatoire';
+        }
+    }
+    if (field === 'note') {
+        if (type.required) {
+            return 'Note obligatoire';
+        }
+        if (type.max) {
+            return 'La note maximum possible est 20';
+        }
+        if (type.min) {
+            return 'La note minimum possible est 0';
         }
     }
     return '';

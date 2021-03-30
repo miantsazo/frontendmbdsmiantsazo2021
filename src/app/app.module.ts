@@ -20,6 +20,9 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatSelectModule} from '@angular/material/select';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { RenduDirective } from './shared/rendu.directive';
@@ -35,18 +38,23 @@ import { UsersComponent } from './users/users.component';
 import { LoginComponent } from './login/login.component';
 import { TokenInterceptor } from './shared/token.interceptor';
 import { NoteDialogComponent } from './assignments/note-dialog/note-dialog.component';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 
 
 const routes:Routes = [
   {
-    // indique que http://localhost:4200 sans rien ou avec un "/" à la fin
-    // doit afficher le composant AssignmentsComponent (celui qui affiche la liste)
     path:"",
-    component:LoginComponent,
+    component: LoginComponent,
   },
   {
     // idem avec  http://localhost:4200/home
     path:"home",
+    component:AssignmentsComponent,
+    canActivate : [AuthGuard]
+  },
+  {
+    // idem avec  http://localhost:4200/home
+    path:"assignments",
     component:AssignmentsComponent,
     canActivate : [AuthGuard]
   },
@@ -77,7 +85,8 @@ const routes:Routes = [
     EditAssigmentComponent,
     UsersComponent,
     LoginComponent,
-    NoteDialogComponent
+    NoteDialogComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +96,8 @@ const routes:Routes = [
     MatFormFieldModule, MatInputModule, MatDatepickerModule,
     MatNativeDateModule, MatListModule, MatCardModule, MatCheckboxModule,
     MatSlideToggleModule, MatTabsModule, MatSnackBarModule, MatStepperModule,
-    MatSelectModule, MatGridListModule, MatDialogModule,
+    MatSelectModule, MatGridListModule, MatDialogModule,MatToolbarModule,
+    MatSidenavModule, MatMenuModule,
     RouterModule.forRoot(routes), HttpClientModule
   ],
   providers: [

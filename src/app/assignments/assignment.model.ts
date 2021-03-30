@@ -8,8 +8,8 @@ export class Assignment {
   dateDeRendu: Date;
   rendu: boolean;
   auteur: string;
-  matiere: Matiere;
-  prof: Prof;
+  matiere: Matiere | any;
+  prof: Prof | any;
   note: number;
   remarques: string;
 }

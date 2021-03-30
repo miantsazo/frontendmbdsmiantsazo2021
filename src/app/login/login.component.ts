@@ -21,7 +21,12 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) {
+      if(this.authService.isLoggedIn()) {
+        this.router.navigate(["/home"]);
+        return;
+      }
+     }
 
   ngOnInit(): void {
     this.signupForm = this.formBuilder.group({
@@ -81,11 +86,6 @@ export class LoginComponent implements OnInit {
         panelClass: ['error-snackbar']
       });
     })
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
   }
 }
 class LoginForm {

@@ -36,10 +36,19 @@ export class NoteDialogComponent implements OnInit {
     if (this.noteForm.invalid) {
       return;
     }
-    this.assignment.dateDeRendu = this.noteForm.get('date').value;
-    this.assignment.note = this.noteForm.get('note').value;
-    this.assignment.remarques = this.noteForm.get('remarques').value;
-    this.assignmentsService.updateAssignment(this.assignment).subscribe(response => {
+    
+    let newAssignment = {... this.assignment};
+    newAssignment.dateDeRendu = this.noteForm.get('date').value;
+    newAssignment.note = this.noteForm.get('note').value;
+    newAssignment.remarques = this.noteForm.get('remarques').value;
+    newAssignment.matiere = this.assignment.matiere[0]._id;
+    newAssignment.prof = this.assignment.prof[0]._id;
+    newAssignment.rendu = true;
+    this.assignmentsService.updateAssignment(newAssignment).subscribe(response => {
+      this.assignment.dateDeRendu = newAssignment.dateDeRendu;
+      this.assignment.note = newAssignment.note;
+      this.assignment.remarques = newAssignment.remarques;
+      this.assignment.rendu = newAssignment.rendu;
       this.snackBar.open(response.message, null, {
         duration: 1000,
         panelClass: ['success-snackbar']
@@ -56,5 +65,7 @@ export class NoteDialogComponent implements OnInit {
   getErrorMessages(field: string, type: any) {
     return GetErrorMessage(field, type);
   }
+
+  get f() { return this.noteForm.controls; }
 
 }
