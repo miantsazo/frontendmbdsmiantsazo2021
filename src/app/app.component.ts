@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssignmentsService } from './shared/assignments.service';
 import { AuthService } from './shared/auth.service';
@@ -10,9 +11,16 @@ import { AuthService } from './shared/auth.service';
 })
 export class AppComponent {
   title = 'Application de gestion des assignments';
+  mobileQuery: MediaQueryList;
 
-  constructor(public authService:AuthService, private router:Router,
-              private assignmentsService:AssignmentsService) {}
+  private _mobileQueryListener: () => void;
+
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,public authService:AuthService, private router:Router,
+              private assignmentsService:AssignmentsService) {
+                this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+              }
 
   login() {
     // si je suis pas loggé, je me loggue, sinon, si je suis
@@ -40,5 +48,17 @@ export class AppComponent {
         console.log("LA BD A ETE PEUPLEE, TOUS LES ASSIGNMENTS AJOUTES, ON RE-AFFICHE LA LISTE");
         this.router.navigate(["/home"], {replaceUrl:true});
       })
+  }
+
+  ngOnInit() {
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
   }
 }

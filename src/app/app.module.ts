@@ -23,6 +23,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
 
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { RenduDirective } from './shared/rendu.directive';
@@ -38,7 +41,8 @@ import { UsersComponent } from './users/users.component';
 import { LoginComponent } from './login/login.component';
 import { TokenInterceptor } from './shared/token.interceptor';
 import { NoteDialogComponent } from './assignments/note-dialog/note-dialog.component';
-import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { MatieresComponent } from './matieres/matieres.component';
+import { ProfsComponent } from './profs/profs.component';
 
 
 const routes:Routes = [
@@ -72,6 +76,16 @@ const routes:Routes = [
     path:"assignment/:id/edit",
     component:AddAssignmentComponent,
     canActivate : [AuthGuard]
+  },
+  {
+    path:"matieres",
+    component:MatieresComponent,
+    canActivate : [AuthGuard]
+  },
+  {
+    path:"profs",
+    component:ProfsComponent,
+    canActivate : [AuthGuard]
   }
 ]
 @NgModule({
@@ -86,7 +100,8 @@ const routes:Routes = [
     UsersComponent,
     LoginComponent,
     NoteDialogComponent,
-    SidebarComponent
+    MatieresComponent,
+    ProfsComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,7 +112,8 @@ const routes:Routes = [
     MatNativeDateModule, MatListModule, MatCardModule, MatCheckboxModule,
     MatSlideToggleModule, MatTabsModule, MatSnackBarModule, MatStepperModule,
     MatSelectModule, MatGridListModule, MatDialogModule,MatToolbarModule,
-    MatSidenavModule, MatMenuModule,
+    MatSidenavModule, MatMenuModule, MatProgressSpinnerModule, MatPaginatorModule,
+    MatTableModule,
     RouterModule.forRoot(routes), HttpClientModule
   ],
   providers: [

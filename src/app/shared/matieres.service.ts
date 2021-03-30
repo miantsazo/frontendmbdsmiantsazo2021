@@ -10,10 +10,14 @@ import { environment } from '../../environments/environment';
 export class MatieresService {
   uri = environment.apiUrl + "/matieres";
   // uri = "https://backmbdsmiantsazo2021.herokuapp.com/api/matieres";
-  
+
   constructor(private http: HttpClient) { }
-  
-  getMatieres(): Observable<Matiere[]> {
+
+  getMatieres(): Observable<any> {
     return this.http.get<Matiere[]>(this.uri);
+  }
+
+  getMatieresPagines(page: number, limit: number): Observable<any> {
+    return this.http.get<Matiere[]>(this.uri + "?page=" + (page + 1) + "&limit=" + limit);
   }
 }
