@@ -17,7 +17,25 @@ export class MatieresService {
     return this.http.get<Matiere[]>(this.uri);
   }
 
+  getMatiere(id: string): Observable<any> {
+    return this.http.get<Matiere>(this.uri + "/" + id);
+  }
+
   getMatieresPagines(page: number, limit: number): Observable<any> {
     return this.http.get<Matiere[]>(this.uri + "?page=" + (page + 1) + "&limit=" + limit);
   }
+
+  delete(id: string): Observable<any> {
+    return this.http.delete(this.uri + "/" + id);
+  }
+
+  update(matiere: Matiere): Observable<any> {
+    return this.http.put(this.uri, matiere);
+  }
+
+  add(matiere: Matiere): Observable<any> {
+    return this.http.post(this.uri, matiere);
+  }
+
+
 }

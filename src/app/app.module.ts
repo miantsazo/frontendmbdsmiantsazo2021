@@ -43,6 +43,7 @@ import { TokenInterceptor } from './shared/token.interceptor';
 import { NoteDialogComponent } from './assignments/note-dialog/note-dialog.component';
 import { MatieresComponent } from './matieres/matieres.component';
 import { ProfsComponent } from './profs/profs.component';
+import { AddMatiereComponent } from './matieres/add-matiere/add-matiere.component';
 
 
 const routes:Routes = [
@@ -83,6 +84,11 @@ const routes:Routes = [
     canActivate : [AuthGuard]
   },
   {
+    path:"matieres/:id/edit",
+    component:AddMatiereComponent,
+    canActivate : [AuthGuard]
+  },
+  {
     path:"profs",
     component:ProfsComponent,
     canActivate : [AuthGuard]
@@ -102,6 +108,7 @@ const routes:Routes = [
     NoteDialogComponent,
     MatieresComponent,
     ProfsComponent,
+    AddMatiereComponent,
   ],
   imports: [
     BrowserModule,

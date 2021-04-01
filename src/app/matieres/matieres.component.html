@@ -2,7 +2,10 @@
 <mat-form-field>
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Data" #input>
-  </mat-form-field>
+</mat-form-field>
+<button mat-flat-button color="accent" (click)="onClickAdd()">
+    Ajouter une matiere
+</button>
 <div class="example-container mat-elevation-z8">
     <div class="example-loading-shade" *ngIf="isLoadingResults">
         <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
@@ -32,10 +35,10 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                 <td mat-cell *matCellDef="let row">
-                    <button mat-icon-button color="primary" aria-label="Example icon button with a filter list icon">
+                    <button mat-icon-button color="primary" (click)="onClickEdit(row._id)">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button color="warn" aria-label="Example icon button with a filter list icon">
+                    <button mat-icon-button color="warn" (click)="onDelete(row._id)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </td>

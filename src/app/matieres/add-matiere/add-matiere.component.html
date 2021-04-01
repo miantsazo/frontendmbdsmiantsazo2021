@@ -1,0 +1,23 @@
+<form ngForm [formGroup]="matiereForm">
+    <h1 mat-dialog-title>{{matiere.libelle || "Nouvelle matière"}}</h1>
+    <div mat-dialog-content>
+        <mat-form-field style="width: 100%; margin-right: 10px;">
+            <mat-label>Libellé</mat-label>
+            <input matInput type="text" formControlName="libelle" [(ngModel)]="matiere.libelle">
+            <mat-error>
+                <!-- {{getErrorMessages('date',f.date.errors)}} -->
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+            <mat-label>Prof</mat-label>
+            <mat-select formControlName="prof" [compareWith]="compareProf" required [(ngModel)]="matiere.prof[0] == null ? matiere.prof : matiere.prof[0]">
+                <mat-option *ngFor="let prof of profs" [value]="prof" >{{prof.prenom + " " + prof.nom}}</mat-option>
+              </mat-select>
+              <!-- <mat-error>{{errorMessage}}</mat-error> -->
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="true">Cancel</button>
+        <button mat-button (click)="confirm()">Confirm</button>
+    </div>
+</form>

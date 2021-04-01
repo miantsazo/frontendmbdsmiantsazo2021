@@ -59,7 +59,6 @@ export class AssignmentsService {
   }
 
   addAssignment(assignment: Assignment): Observable<any> {
-    console.log(assignment);
     return this.http.post(this.uri, assignment);
   }
 
