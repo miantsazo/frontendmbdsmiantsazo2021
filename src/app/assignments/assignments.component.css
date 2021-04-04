@@ -6,3 +6,29 @@
 .ajouterBtn {
   align-self: flex-end;
 }
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  float: right;
+  align-self: stretch;
+}
+
+.link_assignment {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link_assignment:hover {
+  font-weight: 500;
+}
+
+.header_assignment_details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.prof_display {
+  display: flex;
+  justify-content: space-between;
+}

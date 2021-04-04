@@ -32,3 +32,11 @@ h1.app-name {
 .content {
     margin: 50px 100px 50px 100px;
 }
+
+mat-sidenav {
+    width: 250px;
+}
+
+.space_between {
+    margin-right: 15px;
+}
