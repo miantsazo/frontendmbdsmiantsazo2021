@@ -1,4 +1,17 @@
-/* Structure */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    height: 40px;
+}
+
+.input-search {
+    width: 100%;
+}
+
+.inline {
+    display: flex;
+}
 
 .example-container {
     position: relative;

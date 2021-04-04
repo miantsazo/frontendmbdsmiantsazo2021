@@ -1,57 +1,82 @@
 <!-- https://material.angular.io/components/table/examples -->
-<mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Data" #input>
-</mat-form-field>
-<button mat-flat-button color="accent" (click)="onClickAdd()">
-    Ajouter une matiere
-</button>
-<div class="example-container mat-elevation-z8">
-    <div class="example-loading-shade" *ngIf="isLoadingResults">
-        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-    </div>
-
-    <div class="example-table-container">
-        <table mat-table [dataSource]="filteredAndPagedIssues" class="example-table" matSortDisableClear matSort
-            matSortDirection="desc" (matSortChange)="resetPaging()">
-            <!-- Number Column -->
-            <ng-container matColumnDef="number">
-                <th mat-header-cell *matHeaderCellDef>#</th>
-                <td mat-cell *matCellDef="let row">{{row.number}}</td>
-            </ng-container>
-
-            <!-- Title Column -->
-            <ng-container matColumnDef="libellé">
-                <th mat-header-cell *matHeaderCellDef>Libellé</th>
-                <td mat-cell *matCellDef="let row">{{row.libelle}}</td>
-            </ng-container>
-
-            <!-- Prof Column -->
-            <ng-container matColumnDef="prof">
-                <th mat-header-cell *matHeaderCellDef>Prof</th>
-                <td mat-cell *matCellDef="let row">{{row.prof[0].prenom + " " + row.prof[0].nom}}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let row">
-                    <button mat-icon-button color="primary" (click)="onClickEdit(row._id)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button color="warn" (click)="onDelete(row._id)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    </div>
-
-    <mat-paginator [length]="resultsLength" [pageSize]="limit"></mat-paginator>
+<div class="top-bar">
+  <mat-form-field>
+    <mat-label>Filtre de recherche</mat-label>
+    <input
+      class="input-search"
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex. Data"
+      #input
+    />
+  </mat-form-field>
+  <button mat-raised-button (click)="onClickAdd()">Ajouter une matiere</button>
 </div>
+<div class="example-container mat-elevation-z1">
+  <div class="example-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
 
+  <div class="example-table-container">
+    <table
+      mat-table
+      [dataSource]="filteredAndPagedIssues"
+      class="example-table"
+      matSortDisableClear
+      matSort
+      matSortDirection="desc"
+      (matSortChange)="resetPaging()"
+    >
+      <!-- Number Column -->
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let row">{{ row?.number }}</td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="libellé">
+        <th mat-header-cell *matHeaderCellDef>Libellé</th>
+        <td mat-cell *matCellDef="let row">{{ row?.libelle }}</td>
+      </ng-container>
+
+      <!-- Prof Column -->
+      <ng-container matColumnDef="prof">
+        <th mat-header-cell *matHeaderCellDef>Nom du professeur</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="inline">
+            <p><img
+              src="../../assets/img/{{ row.prof[0]?.photoUrl }}"
+              width="30"
+              height="30"
+            /></p>
+            <p>{{ row.prof[0]?.prenom + " " + row.prof[0]?.nom }}</p>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="onClickEdit(row?._id)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(row._id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="limit"></mat-paginator>
+</div>
 
 <!-- Copyright 2020 Google LLC. All Rights Reserved.
       Use of this source code is governed by an MIT-style license that

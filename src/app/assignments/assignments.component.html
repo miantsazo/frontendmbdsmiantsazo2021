@@ -3,8 +3,10 @@
     <a routerLink="/add" class="ajouterBtn">
       <button mat-raised-button color="basic">Ajouter un assignment</button>
     </a>
-
     <mat-tab-group #tabgroup (selectedTabChange)="onTabClick($event)">
+      <ngx-spinner [fullScreen]="false" size="medium" style="color: white"
+        ><p>En cours de chargement</p></ngx-spinner
+      >
       <mat-tab label="Devoirs non-rendus">
         <ng-template matTabContent>
           <h1>Liste des assignments non-rendus</h1>
@@ -28,7 +30,7 @@
                   <div class="prof_display">
                     <p>{{ a.prof[0]?.prenom + " " + a.prof[0]?.nom }}</p>
                     <img
-                      src="../../assets/img/{{ a.prof[0].photoUrl }}"
+                      src="../../assets/img/{{ a.prof[0]?.photoUrl }}"
                       width="50"
                     />
                   </div>
@@ -96,7 +98,7 @@
                   <div class="prof_display">
                     <p>{{ a.prof[0]?.prenom + " " + a.prof[0]?.nom }}</p>
                     <img
-                      src="../../assets/img/{{ a.prof[0].photoUrl }}"
+                      src="../../assets/img/{{ a.prof[0]?.photoUrl }}"
                       width="50"
                     />
                   </div>

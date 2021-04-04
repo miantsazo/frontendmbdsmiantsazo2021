@@ -44,6 +44,7 @@ import { NoteDialogComponent } from './assignments/note-dialog/note-dialog.compo
 import { MatieresComponent } from './matieres/matieres.component';
 import { ProfsComponent } from './profs/profs.component';
 import { AddMatiereComponent } from './matieres/add-matiere/add-matiere.component';
+import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
 
 
 const routes:Routes = [
@@ -121,7 +122,8 @@ const routes:Routes = [
     MatSelectModule, MatGridListModule, MatDialogModule,MatToolbarModule,
     MatSidenavModule, MatMenuModule, MatProgressSpinnerModule, MatPaginatorModule,
     MatTableModule,
-    RouterModule.forRoot(routes), HttpClientModule
+    RouterModule.forRoot(routes), HttpClientModule,
+    NgxSpinnerModule
   ],
   providers: [
     {

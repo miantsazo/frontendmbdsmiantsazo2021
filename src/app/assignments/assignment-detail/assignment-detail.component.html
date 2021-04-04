@@ -1,21 +1,56 @@
 <div class="container">
   <mat-card *ngIf="assignmentTransmis">
-    <mat-card-title>{{assignmentTransmis.nom}}</mat-card-title>
-    <mat-card-subtitle>{{assignmentTransmis.dateDeRendu | date}}</mat-card-subtitle>
-    <mat-card-subtitle>Elève: {{assignmentTransmis.auteur}}</mat-card-subtitle>
-    <mat-card-subtitle>Note: {{assignmentTransmis.note | number}}</mat-card-subtitle>
-    <mat-card-subtitle>Remarques: {{assignmentTransmis.remarques}}</mat-card-subtitle>
+    <ngx-spinner [fullScreen]=false size="medium"><p style="color: white;">En cours de chargement</p></ngx-spinner>
+    <mat-card-title>Détails de l'assignment</mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content class="separator">
+      <mat-card-subtitle class="inline-block">
+        <p>Matière : {{ assignmentTransmis.nom }}</p>
+        <div class="inline-block">
+          <p>Professeur : {{ assignmentTransmis.prof[0]?.nom }}</p>
+          <img
+            src="../../assets/img/{{ assignmentTransmis.prof[0]?.photoUrl }}"
+            width="50"
+          />
+        </div>
+        <p>
+          {{ assignmentTransmis.dateDeRendu | date }}
+        </p>
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        Nom de l'élève: {{ assignmentTransmis.auteur }}
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        Note: {{ assignmentTransmis.note | number }}
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        Remarques: {{ assignmentTransmis.remarques }}
+      </mat-card-subtitle>
+    </mat-card-content>
     <div id="bottom">
-      <mat-checkbox *ngIf="!assignmentTransmis.rendu" (click)="onAssignmentRendu()">
+      <mat-checkbox
+        *ngIf="!assignmentTransmis.rendu"
+        (click)="onAssignmentRendu()"
+      >
         Rendu
       </mat-checkbox>
       <nav>
-          <button mat-stroked-button color="primary" (click)="onClickEdit()">Modifier</button>
-          <button *ngIf="!assignmentTransmis.note" mat-stroked-button color="primary" (click)="openDialog()">Noter</button>
+        <button mat-stroked-button color="primary" (click)="onClickEdit()">
+          Modifier
+        </button>
+        <button
+          *ngIf="!assignmentTransmis.note"
+          mat-stroked-button
+          color="primary"
+          (click)="openDialog()"
+        >
+          Noter
+        </button>
       </nav>
 
-
-      <button mat-stroked-button color="warn" (click)="onDelete()">Supprimer</button>
+      <button mat-stroked-button color="warn" (click)="onDelete()">
+        Supprimer
+      </button>
     </div>
   </mat-card>
 </div>

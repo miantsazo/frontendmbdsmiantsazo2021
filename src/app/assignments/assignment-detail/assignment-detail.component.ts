@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AssignmentsService } from 'src/app/shared/assignments.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { Assignment } from '../assignment.model';
@@ -22,11 +23,14 @@ export class AssignmentDetailComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.getAssignmentById();
+    this.spinner.hide();
   }
 
   getAssignmentById() {
@@ -37,13 +41,13 @@ export class AssignmentDetailComponent implements OnInit {
   }
 
   onAssignmentRendu() {
+    this.spinner.show();
     this.assignmentTransmis.rendu = true;
 
     this.assignmentsService
       .updateAssignment(this.assignmentTransmis)
       .subscribe((reponse) => {
-        // et on navigue vers la page d'accueil qui affiche la liste
-        this.router.navigate(['/home']);
+        this.spinner.hide();
       });
 
     //this.assignmentTransmis = null;
