@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AssignmentsService } from 'src/app/shared/assignments.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { environment } from 'src/environments/environment';
 import { Assignment } from '../assignment.model';
 import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 
@@ -17,6 +18,7 @@ import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 export class AssignmentDetailComponent implements OnInit {
   // passé sous forme d'attribut HTML
   assignmentTransmis: Assignment;
+  backendUrl = environment.backendBaseUrl;
 
   constructor(
     private assignmentsService: AssignmentsService,

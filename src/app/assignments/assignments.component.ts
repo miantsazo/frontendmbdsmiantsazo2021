@@ -5,6 +5,7 @@ import { AuthService } from '../shared/auth.service';
 import { SnackbarService } from '../shared/snackbar.service';
 import { Assignment } from './assignment.model';
 import { NgxSpinnerService } from "ngx-spinner";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-assignments',
@@ -22,6 +23,7 @@ export class AssignmentsComponent implements OnInit {
   hasNextPage: boolean;
   nextPage: number;
   renduTab: boolean = false;
+  backendUrl = environment.backendBaseUrl;
 
   // on injecte le service de gestion des assignments
   constructor(private assignmentsService: AssignmentsService,

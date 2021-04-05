@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { AuthService } from '../shared/auth.service';
 import { MatieresService } from '../shared/matieres.service';
 import { SnackbarService } from '../shared/snackbar.service';
@@ -22,6 +23,7 @@ export class MatieresComponent implements AfterViewInit {
   resultsLength = 0;
   limit = 10;
   isLoadingResults = true;
+  backendUrl = environment.backendBaseUrl;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
