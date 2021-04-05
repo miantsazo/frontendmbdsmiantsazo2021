@@ -4,8 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Matiere } from 'src/app/matiere.model';
 import { Prof } from 'src/app/prof.model';
+import { AuthService } from 'src/app/shared/auth.service';
 import { MatieresService } from 'src/app/shared/matieres.service';
 import { ProfsService } from 'src/app/shared/profs.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { MatieresComponent } from '../matieres.component';
 
 @Component({
@@ -24,7 +26,8 @@ export class AddMatiereComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private matiereService: MatieresService,
     private profService: ProfsService,
-    private snackBar: MatSnackBar) { }
+    private snackbarService: SnackbarService,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     this.matiereForm = new FormGroup({
@@ -42,6 +45,9 @@ export class AddMatiereComponent implements OnInit {
   getProfs() {
     this.profService.getProfs().subscribe(profs => {
       this.profs = profs;
+    }, responseError => {
+      this.snackbarService.openSnackbar(responseError.error.message, true);
+      this.authService.tokenError(responseError);
     })
   }
 
@@ -53,33 +59,22 @@ export class AddMatiereComponent implements OnInit {
       let updatedMatiere = { ... this.matiere };
       updatedMatiere.prof = this.matiere.prof[0]._id;
       this.matiereService.update(updatedMatiere).subscribe(response => {
-        this.snackBar.open(response.message, null, {
-          duration: 1000,
-          panelClass: ['success-snackbar']
-        });
+        this.snackbarService.openSnackbar(response.message, false);
         this.onUpdate.emit('update');
         this.dialogRef.close();
       }, responseError => {
-        this.snackBar.open(responseError.error.message, null, {
-          duration: 1000,
-          panelClass: ['error-snackbar']
-        });
+        this.snackbarService.openSnackbar(responseError.error.message, true);
+        this.authService.tokenError(responseError);
       })
     } else {
-      
       this.matiere.prof = this.matiereForm.get('prof').value;
       this.matiereService.add(this.matiere).subscribe(response => {
-        this.snackBar.open(response.message, null, {
-          duration: 1000,
-          panelClass: ['success-snackbar']
-        });
+        this.snackbarService.openSnackbar(response.message, false);
         this.onUpdate.emit('update');
         this.dialogRef.close();
       }, responseError => {
-        this.snackBar.open(responseError.error.message, null, {
-          duration: 1000,
-          panelClass: ['error-snackbar']
-        });
+        this.snackbarService.openSnackbar(responseError.error.message, true);
+        this.authService.tokenError(responseError);
       })
     }
 

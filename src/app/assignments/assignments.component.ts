@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssignmentsService } from '../shared/assignments.service';
+import { AuthService } from '../shared/auth.service';
+import { SnackbarService } from '../shared/snackbar.service';
 import { Assignment } from './assignment.model';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -11,9 +12,9 @@ import { NgxSpinnerService } from "ngx-spinner";
   styleUrls: ['./assignments.component.css'],
 })
 export class AssignmentsComponent implements OnInit {
-  assignments:Assignment[];
-  page: number=1;
-  limit: number=10;
+  assignments: Assignment[];
+  page: number = 1;
+  limit: number = 10;
   totalDocs: number;
   totalPages: number;
   hasPrevPage: boolean;
@@ -23,11 +24,12 @@ export class AssignmentsComponent implements OnInit {
   renduTab: boolean = false;
 
   // on injecte le service de gestion des assignments
-  constructor(private assignmentsService:AssignmentsService,
-              private route:ActivatedRoute,
-              private router:Router,
-              private snackbar: MatSnackBar,
-              private spinner: NgxSpinnerService) {}
+  constructor(private assignmentsService: AssignmentsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackbarService: SnackbarService,
+    private authService: AuthService,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.spinner.show();
@@ -40,61 +42,43 @@ export class AssignmentsComponent implements OnInit {
       this.spinner.hide();
     });
 
-  
+
   }
 
   getAssignments(rendu: boolean) {
     this.spinner.show();
     this.assignmentsService.getAssignmentsPagine(this.page, this.limit, rendu)
-    .subscribe(data => {
-      this.assignments = data.docs;
-      this.page = data.page;
-      this.limit = data.limit;
-      this.totalDocs = data.totalDocs;
-      this.totalPages = data.totalPages;
-      this.hasPrevPage = data.hasPrevPage;
-      this.prevPage = data.prevPage;
-      this.hasNextPage = data.hasNextPage;
-      this.nextPage = data.nextPage;
-      this.spinner.hide();
-    }, responseError => {
-      localStorage.removeItem('token');
-      this.snackbar.open(responseError.error.message, null, {
-        duration: 1000,
-        panelClass: ['error-snackbar']
+      .subscribe(data => {
+        this.assignments = data.docs;
+        this.page = data.page;
+        this.limit = data.limit;
+        this.totalDocs = data.totalDocs;
+        this.totalPages = data.totalPages;
+        this.hasPrevPage = data.hasPrevPage;
+        this.prevPage = data.prevPage;
+        this.hasNextPage = data.hasNextPage;
+        this.nextPage = data.nextPage;
+      }, responseError => {
+        this.authService.tokenError(responseError);
+        this.snackbarService.openSnackbar(responseError.error.message, true);
       });
-      this.router.navigate(['/']);
-    });
-  }
-
-  onDeleteAssignment(event) {
-    // event = l'assignment à supprimer
-
-    //this.assignments.splice(index, 1);
-    this.assignmentsService.deleteAssignment(event)
-      .subscribe(message => {
-        console.log(message);
-      })
   }
 
   premierePage() {
     this.router.navigate(['/home'], {
       queryParams: {
-        page:1,
-        limit:this.limit,
+        page: 1,
+        limit: this.limit,
         rendu: this.renduTab
       }
     });
   }
 
   pageSuivante() {
-    /*
-    this.page = this.nextPage;
-    this.getAssignments();*/
     this.router.navigate(['/home'], {
       queryParams: {
-        page:this.nextPage,
-        limit:this.limit,
+        page: this.nextPage,
+        limit: this.limit,
         rendu: this.renduTab
       }
     });
@@ -104,8 +88,8 @@ export class AssignmentsComponent implements OnInit {
   pagePrecedente() {
     this.router.navigate(['/home'], {
       queryParams: {
-        page:this.prevPage,
-        limit:this.limit,
+        page: this.prevPage,
+        limit: this.limit,
         rendu: this.renduTab
       }
     });
@@ -114,8 +98,8 @@ export class AssignmentsComponent implements OnInit {
   dernierePage() {
     this.router.navigate(['/home'], {
       queryParams: {
-        page:this.totalPages,
-        limit:this.limit,
+        page: this.totalPages,
+        limit: this.limit,
         rendu: this.renduTab
       }
     });
@@ -123,7 +107,7 @@ export class AssignmentsComponent implements OnInit {
 
   onTabClick(event) {
     this.spinner.show();
-    if(event.index == 0) {
+    if (event.index == 0) {
       this.renduTab = false
     } else {
       this.renduTab = true

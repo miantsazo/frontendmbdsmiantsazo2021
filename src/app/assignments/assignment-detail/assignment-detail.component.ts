@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AssignmentsService } from 'src/app/shared/assignments.service';
 import { AuthService } from 'src/app/shared/auth.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { Assignment } from '../assignment.model';
 import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 
@@ -22,7 +23,7 @@ export class AssignmentDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private snackBar: MatSnackBar,
+    private snackbarService: SnackbarService,
     public dialog: MatDialog,
     private spinner: NgxSpinnerService
   ) { }
@@ -37,35 +38,24 @@ export class AssignmentDetailComponent implements OnInit {
     const id: string = this.route.snapshot.params.id;
     this.assignmentsService.getAssignment(id).subscribe((assignment) => {
       this.assignmentTransmis = assignment[0];
+    }, responseError => {
+      this.snackbarService.openSnackbar(responseError.error.message, true);
+      this.authService.tokenError(responseError);
+      if(responseError.status === 404) {
+        this.snackbarService.openSnackbar(responseError.error.message, true);
+        this.router.navigate(['/']);
+      }
     });
-  }
-
-  onAssignmentRendu() {
-    this.spinner.show();
-    this.assignmentTransmis.rendu = true;
-
-    this.assignmentsService
-      .updateAssignment(this.assignmentTransmis)
-      .subscribe((reponse) => {
-        this.spinner.hide();
-      });
-
-    //this.assignmentTransmis = null;
   }
 
   onDelete() {
     this.assignmentsService
       .deleteAssignment(this.assignmentTransmis)
       .subscribe((response) => {
-        this.snackBar.open(response.message, null, {
-          duration: 500,
-          panelClass: ['succes-snackbar']
-        }).afterDismissed().subscribe(() => this.router.navigate(['/home']))
+        this.snackbarService.openSnackbar(response.message, false).afterDismissed().subscribe(() => this.router.navigate(['/home']))
       }, responseError => {
-        this.snackBar.open(responseError.error.message, null, {
-          duration: 1000,
-          panelClass: ['error-snackbar']
-        });
+        this.authService.tokenError(responseError);
+        this.snackbarService.openSnackbar(responseError.error.message, false).afterDismissed().subscribe(() => this.router.navigate(['/home']))
       });
   }
 

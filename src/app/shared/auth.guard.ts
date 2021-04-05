@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
     | UrlTree {
 
     if (!this.authService.isLoggedIn()) {
-      this.snackBar.open("Veuillez vous connectez", null, {
+      this.snackBar.open("Veuillez vous connecter", null, {
         duration: 1000,
         panelClass: ['error-snackbar']
       });

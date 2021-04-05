@@ -26,6 +26,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { RenduDirective } from './shared/rendu.directive';
@@ -44,7 +45,9 @@ import { NoteDialogComponent } from './assignments/note-dialog/note-dialog.compo
 import { MatieresComponent } from './matieres/matieres.component';
 import { ProfsComponent } from './profs/profs.component';
 import { AddMatiereComponent } from './matieres/add-matiere/add-matiere.component';
+import {AddProfsComponent} from './profs/add-profs/add-profs.component'
 import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
+import { from } from 'rxjs';
 
 
 const routes:Routes = [
@@ -110,6 +113,7 @@ const routes:Routes = [
     MatieresComponent,
     ProfsComponent,
     AddMatiereComponent,
+    AddProfsComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,9 +125,8 @@ const routes:Routes = [
     MatSlideToggleModule, MatTabsModule, MatSnackBarModule, MatStepperModule,
     MatSelectModule, MatGridListModule, MatDialogModule,MatToolbarModule,
     MatSidenavModule, MatMenuModule, MatProgressSpinnerModule, MatPaginatorModule,
-    MatTableModule,
-    RouterModule.forRoot(routes), HttpClientModule,
-    NgxSpinnerModule
+    MatTableModule, MaterialFileInputModule, NgxSpinnerModule,
+    RouterModule.forRoot(routes), HttpClientModule
   ],
   providers: [
     {

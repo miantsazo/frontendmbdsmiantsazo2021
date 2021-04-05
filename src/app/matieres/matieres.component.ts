@@ -1,13 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
-import { Router } from '@angular/router';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { Matiere } from '../matiere.model';
+import { AuthService } from '../shared/auth.service';
 import { MatieresService } from '../shared/matieres.service';
+import { SnackbarService } from '../shared/snackbar.service';
 import { AddMatiereComponent } from './add-matiere/add-matiere.component';
 
 @Component({
@@ -29,9 +28,9 @@ export class MatieresComponent implements AfterViewInit {
 
   constructor(private matieresService: MatieresService,
     private cdref: ChangeDetectorRef,
-    private snackBar: MatSnackBar,
-    private router: Router,
-    private dialog: MatDialog) { }
+    private snackbarService: SnackbarService,
+    private dialog: MatDialog,
+    private authService: AuthService) { }
 
   ngAfterViewInit() {
     this.loadData();
@@ -53,7 +52,13 @@ export class MatieresComponent implements AfterViewInit {
       });
       ref.componentInstance.onUpdate.subscribe(() => {
         this.loadData();
+      }, responseError => {
+        this.snackbarService.openSnackbar(responseError.error.message, true);
+        this.authService.tokenError(responseError);
       })
+    }, responseError => {
+      this.snackbarService.openSnackbar(responseError.error.message, true);
+      this.authService.tokenError(responseError);
     })
   }
 
@@ -64,20 +69,19 @@ export class MatieresComponent implements AfterViewInit {
     });
     ref.componentInstance.onUpdate.subscribe(() => {
       this.loadData();
+    }, responseError => {
+      this.snackbarService.openSnackbar(responseError.error.message, true);
+      this.authService.tokenError(responseError);
     })
   }
 
   onDelete(id: string) {
     this.matieresService.delete(id).subscribe((response) => {
-      this.snackBar.open(response.message, null, {
-        duration: 500,
-        panelClass: ['succes-snackbar']
-      }).afterDismissed().subscribe(() => this.loadData())
+      this.loadData()
+      this.snackbarService.openSnackbar(response.message, false);
     }, responseError => {
-      this.snackBar.open(responseError.error.message, null, {
-        duration: 1000,
-        panelClass: ['error-snackbar']
-      });
+      this.snackbarService.openSnackbar(responseError.error.message, true);
+      this.authService.tokenError(responseError);
     });
   }
 
@@ -94,7 +98,9 @@ export class MatieresComponent implements AfterViewInit {
           this.resultsLength = data.totalDocs;
           return data.docs;
         }),
-        catchError(() => {
+        catchError((err) => {
+          this.authService.tokenError(err);
+          this.snackbarService.openSnackbar(err.error.message, true);
           this.isLoadingResults = false;
           return observableOf([]);
         })

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../login/user.model';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class AuthService {
   uri = environment.apiUrl;;
   // uri = "https://backmbdsmiantsazo2021.herokuapp.com/api";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   // exemple d'utilisation :
   // isAdmin.then(admin => { console.log("administrateur : " + admin);})
@@ -42,8 +43,11 @@ export class AuthService {
     );
   }
 
-  logout() {
-    
+  tokenError(responseError) {
+    if (responseError.status === 401) {
+      localStorage.removeItem('token');
+      this.router.navigate(['/']);
+    }
   }
 
 }

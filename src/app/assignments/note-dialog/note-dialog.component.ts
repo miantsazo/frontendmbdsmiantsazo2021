@@ -3,7 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { AssignmentsService } from 'src/app/shared/assignments.service';
+import { AuthService } from 'src/app/shared/auth.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { GetErrorMessage } from 'src/app/utils/value-control';
 import { AssignmentDetailComponent } from '../assignment-detail/assignment-detail.component';
 import { Assignment } from '../assignment.model';
@@ -21,7 +24,9 @@ export class NoteDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AssignmentDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private assignmentsService: AssignmentsService,
-    private snackBar: MatSnackBar) { }
+    private snackbarService: SnackbarService,
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     this.assignment = this.data.assignment;
@@ -36,8 +41,8 @@ export class NoteDialogComponent implements OnInit {
     if (this.noteForm.invalid) {
       return;
     }
-    
-    let newAssignment = {... this.assignment};
+
+    let newAssignment = { ... this.assignment };
     newAssignment.dateDeRendu = this.noteForm.get('date').value;
     newAssignment.note = this.noteForm.get('note').value;
     newAssignment.remarques = this.noteForm.get('remarques').value;
@@ -49,16 +54,14 @@ export class NoteDialogComponent implements OnInit {
       this.assignment.note = newAssignment.note;
       this.assignment.remarques = newAssignment.remarques;
       this.assignment.rendu = newAssignment.rendu;
-      this.snackBar.open(response.message, null, {
-        duration: 1000,
-        panelClass: ['success-snackbar']
-      });
+      this.snackbarService.openSnackbar(response.message, false)
       this.dialogRef.close();
     }, responseError => {
-      this.snackBar.open(responseError.error.message, null, {
-        duration: 1000,
-        panelClass: ['error-snackbar']
-      });
+      this.snackbarService.openSnackbar(responseError.error.message, true);
+      if (responseError.status === 401) {
+        this.dialogRef.close();
+      }
+      this.authService.tokenError(responseError);
     })
   }
 

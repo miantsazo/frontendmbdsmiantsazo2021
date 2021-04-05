@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Matiere } from 'src/app/matiere.model';
 import { AssignmentsService } from 'src/app/shared/assignments.service';
+import { AuthService } from 'src/app/shared/auth.service';
 import { MatieresService } from 'src/app/shared/matieres.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { Assignment } from '../assignment.model';
 
 @Component({
@@ -35,7 +36,8 @@ export class AddAssignmentComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private matieresService: MatieresService,
-    private snackBar: MatSnackBar) { }
+    private snackbarService: SnackbarService,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     this.assignment = new Assignment();
@@ -44,9 +46,11 @@ export class AddAssignmentComponent implements OnInit {
       this.assignmentsService.getAssignment(this.route.snapshot.params.id).subscribe((assignment) => {
         this.assignment = assignment[0];
         this.assignment.matiere = assignment[0].matiere[0];
+      }, responseError => {
+        this.snackbarService.openSnackbar(responseError.error.message, true);
+        this.authService.tokenError(responseError);
       });
     } else {
-      // this.assignment = new Assignment();
       this.assignment.rendu = false;
     }
     this.formGroup = this._formBuilder.group({
@@ -69,40 +73,33 @@ export class AddAssignmentComponent implements OnInit {
   getMatieres() {
     this.matieresService.getMatieres().subscribe(matieres => {
       this.matieres = matieres;
+    }, responseError => {
+      this.snackbarService.openSnackbar(responseError.error.message, true);
+      this.authService.tokenError(responseError);
     })
   }
 
-  onSubmit(event) {
-    if(this.isEdition) {
+  onSubmit() {
+    if (this.isEdition) {
       this.assignmentsService.updateAssignment(this.assignment).subscribe(response => {
-        this.snackBar.open(response.message, null, {
-          duration: 1000,
-          panelClass: ['success-snackbar']
-        });
+        this.snackbarService.openSnackbar(response.message, false);
       }, responseError => {
-        this.snackBar.open(responseError.error.message, null, {
-          duration: 1000,
-          panelClass: ['error-snackbar']
-        });
+        this.snackbarService.openSnackbar(responseError.error.message, true);
+        this.authService.tokenError(responseError);
       })
     } else {
       if (this.assignment.dateDeRendu !== null && this.assignment.note != null) {
         this.assignment.rendu = true;
       }
-  
+
       this.assignmentsService.addAssignment(this.assignment)
         .subscribe(response => {
-          this.snackBar.open(response.message, null, {
-            duration: 500,
-            panelClass: ['success-snackbar']
-          }).afterDismissed().subscribe(() => this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
+          this.snackbarService.openSnackbar(response.message, false).afterDismissed().subscribe(() => this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/add']);
           }));
         }, responseError => {
-          this.snackBar.open(responseError.error.message, null, {
-            duration: 1000,
-            panelClass: ['error-snackbar']
-          });
+          this.snackbarService.openSnackbar(responseError.error.message, true);
+          this.authService.tokenError(responseError);
         });
     }
 
