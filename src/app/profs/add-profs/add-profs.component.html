@@ -1,5 +1,5 @@
 <form ngForm [formGroup]="profForm">
-    <h1 mat-dialog-title>{{prof.prenom + " " + prof.nom || "Nouveau prof"}}</h1>
+    <h1 mat-dialog-title>{{prof.prenom ? prof.prenom + " " + prof.nom : "Nouveau prof"}}</h1>
     <div mat-dialog-content>
         <mat-form-field style="width: 100%; margin-right: 10px;">
             <mat-label>Nom</mat-label>
