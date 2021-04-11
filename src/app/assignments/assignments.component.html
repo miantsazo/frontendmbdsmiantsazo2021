@@ -1,17 +1,26 @@
 <mat-card>
   <main class="container">
-    <div class="ajouterBtn">
-      <a routerLink="/add" style="margin-right: 10px;">
-        <button mat-raised-button color="basic">Ajouter un assignment</button>
-      </a>
-      <button mat-raised-button color="primary" title="Peupler la base de données">
-        <mat-icon>vertical_align_bottom</mat-icon>
-      </button>
+    <div class="top-bar">
+      <div>
+        <mat-form-field>
+          <mat-label>Recherche</mat-label>
+          <input class="input-search" matInput placeholder="Ex. Data" #input (keydown.enter)="applyFilter($event.target.value)"/>
+        </mat-form-field>
+      </div>
+
+      <div class="ajouterBtn">
+        <a routerLink="/add" style="margin-right: 10px;">
+          <button mat-raised-button color="basic">Ajouter un assignment</button>
+        </a>
+        <button mat-raised-button color="primary" title="Peupler la base de données">
+          <mat-icon>vertical_align_bottom</mat-icon>
+        </button>
+      </div>
     </div>
     <mat-tab-group #tabgroup (selectedTabChange)="onTabClick($event)">
-      <ngx-spinner [fullScreen]="false" size="medium" style="color: white"
-        ><p>En cours de chargement</p></ngx-spinner
-      >
+      <ngx-spinner [fullScreen]="false" size="medium" style="color: white">
+        <p>En cours de chargement</p>
+      </ngx-spinner>
       <mat-tab label="Devoirs non-rendus">
         <ng-template matTabContent>
           <h1>Liste des assignments non-rendus</h1>
@@ -19,11 +28,8 @@
 
           <mat-list *ngFor="let a of assignments">
             <nav>
-              <a
-                routerLink="/assignment/{{ a._id }}"
-                class="link_assignment"
-                title="Cliquez pour les détails {{ a.nom }}"
-              >
+              <a routerLink="/assignment/{{ a._id }}" class="link_assignment"
+                title="Cliquez pour les détails {{ a.nom }}">
                 <!-- <mat-list-item> -->
                 <div class="header_assignment_details">
                   <h4 *ngIf="a.rendu; else nonsoumis" appRendu>
@@ -41,7 +47,7 @@
                 <p>Elève: {{ a.auteur }}</p>
                 <ng-template #nonsoumis>
                   <h4 appNonRendu>
-                    {{ a.nom }}, non encore rendu par l'élève.
+                    {{ a.nom }}
                   </h4>
                 </ng-template>
 
@@ -56,20 +62,10 @@
             <button mat-icon-button color="primary" (click)="premierePage()">
               <mat-icon>skip_previous</mat-icon>
             </button>
-            <button
-              mat-icon-button
-              color="primary"
-              [disabled]="!hasPrevPage"
-              (click)="pagePrecedente()"
-            >
+            <button mat-icon-button color="primary" [disabled]="!hasPrevPage" (click)="pagePrecedente()">
               <mat-icon>navigate_before</mat-icon>
             </button>
-            <button
-              mat-icon-button
-              color="primary"
-              [disabled]="!hasNextPage"
-              (click)="pageSuivante()"
-            >
+            <button mat-icon-button color="primary" [disabled]="!hasNextPage" (click)="pageSuivante()">
               <mat-icon>navigate_next</mat-icon>
             </button>
             <button mat-icon-button color="primary" (click)="dernierePage()">
@@ -85,11 +81,8 @@
 
           <mat-list *ngFor="let a of assignments">
             <nav>
-              <a
-                routerLink="/assignment/{{ a._id }}"
-                class="link_assignment"
-                title="Cliquez pour les détails {{ a.nom }}"
-              >
+              <a routerLink="/assignment/{{ a._id }}" class="link_assignment"
+                title="Cliquez pour les détails {{ a.nom }}">
                 <div class="header_assignment_details">
                   <h4 *ngIf="a.rendu; else nonsoumis" appRendu>
                     Exercice : {{ a.nom }}
@@ -106,7 +99,7 @@
                 <p>Elève: {{ a.auteur }}</p>
                 <ng-template #nonsoumis>
                   <h4 appNonRendu>
-                    {{ a.nom }}, non encore rendu par l'élève.
+                    {{ a.nom }}
                   </h4>
                 </ng-template>
               </a>
@@ -118,20 +111,10 @@
             <button mat-icon-button color="primary" (click)="premierePage()">
               <mat-icon>skip_previous</mat-icon>
             </button>
-            <button
-              mat-icon-button
-              color="primary"
-              [disabled]="!hasPrevPage"
-              (click)="pagePrecedente()"
-            >
+            <button mat-icon-button color="primary" [disabled]="!hasPrevPage" (click)="pagePrecedente()">
               <mat-icon>navigate_before</mat-icon>
             </button>
-            <button
-              mat-icon-button
-              color="primary"
-              [disabled]="!hasNextPage"
-              (click)="pageSuivante()"
-            >
+            <button mat-icon-button color="primary" [disabled]="!hasNextPage" (click)="pageSuivante()">
               <mat-icon>navigate_next</mat-icon>
             </button>
             <button mat-icon-button color="primary" (click)="dernierePage()">

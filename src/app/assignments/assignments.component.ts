@@ -117,4 +117,13 @@ export class AssignmentsComponent implements OnInit {
     this.getAssignments(this.renduTab);
     this.spinner.hide();
   }
+
+  applyFilter(name: string) {
+   this.assignmentsService.searchAssignments(name, this.renduTab).subscribe(data => {
+    this.assignments = data.docs;
+  }, responseError => {
+    this.authService.tokenError(responseError);
+    this.snackbarService.openSnackbar(responseError.error.message, true);
+  });
+  }
 }

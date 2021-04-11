@@ -26,6 +26,10 @@ export class AssignmentsService {
     return this.http.get<Assignment[]>(this.uri);
   }
 
+  searchAssignments(name: string, rendu: boolean): Observable<any> {
+    return this.http.get<Assignment[]>(this.uri + "?q=" + name + "&rendu=" + rendu);
+  }
+
   getAssignmentsPagine(page: number, limit: number, rendu: boolean): Observable<any> {
     return this.http.get<Assignment[]>(
       this.uri + "?page=" + page + "&limit=" + limit + "&rendu=" + rendu
