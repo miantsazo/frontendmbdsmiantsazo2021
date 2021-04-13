@@ -10,6 +10,8 @@ export class SnackbarService {
 
   openSnackbar(message, isError): MatSnackBarRef<TextOnlySnackBar>{
     return this.snackbar.open(message, null, {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
       duration: 1000,
       panelClass: isError ? ['error-snackbar'] : ['success-snackbar']
     });

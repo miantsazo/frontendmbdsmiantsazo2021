@@ -38,18 +38,6 @@ export class AppComponent {
     // }
   }
 
-  peuplerBD() {
-    // version naive et simple
-    //this.assignmentsService.peuplerBD();
-
-    // meilleure version :
-    this.assignmentsService.peuplerBDAvecForkJoin()
-      .subscribe(() => {
-        console.log("LA BD A ETE PEUPLEE, TOUS LES ASSIGNMENTS AJOUTES, ON RE-AFFICHE LA LISTE");
-        this.router.navigate(["/home"], {replaceUrl:true});
-      })
-  }
-
   ngOnInit() {
   }
 

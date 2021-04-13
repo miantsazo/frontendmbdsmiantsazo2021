@@ -23,6 +23,7 @@ export class AssignmentsComponent implements OnInit {
   hasNextPage: boolean;
   nextPage: number;
   renduTab: boolean = false;
+  isLoadingResults = true;
   backendUrl = environment.backendBaseUrl;
 
   // on injecte le service de gestion des assignments
@@ -48,7 +49,7 @@ export class AssignmentsComponent implements OnInit {
   }
 
   getAssignments(rendu: boolean) {
-    this.spinner.show();
+    this.isLoadingResults = true;
     this.assignmentsService.getAssignmentsPagine(this.page, this.limit, rendu)
       .subscribe(data => {
         this.assignments = data.docs;
@@ -60,10 +61,13 @@ export class AssignmentsComponent implements OnInit {
         this.prevPage = data.prevPage;
         this.hasNextPage = data.hasNextPage;
         this.nextPage = data.nextPage;
+        this.isLoadingResults = false;
       }, responseError => {
         this.authService.tokenError(responseError);
         this.snackbarService.openSnackbar(responseError.error.message, true);
+        this.isLoadingResults = false;
       });
+      
   }
 
   premierePage() {
@@ -119,11 +123,24 @@ export class AssignmentsComponent implements OnInit {
   }
 
   applyFilter(name: string) {
-   this.assignmentsService.searchAssignments(name, this.renduTab).subscribe(data => {
-    this.assignments = data.docs;
-  }, responseError => {
-    this.authService.tokenError(responseError);
-    this.snackbarService.openSnackbar(responseError.error.message, true);
-  });
+    this.isLoadingResults = true;
+    this.assignmentsService.searchAssignments(name, this.renduTab).subscribe(data => {
+      this.assignments = data.docs;
+      this.isLoadingResults = false;
+    }, responseError => {
+      this.authService.tokenError(responseError);
+      this.snackbarService.openSnackbar(responseError.error.message, true);
+      this.isLoadingResults = false;
+    });
+  }
+
+  peuplerBD() {
+    this.spinner.show();
+    this.assignmentsService.peuplerBDAvecForkJoin()
+      .subscribe(() => {
+        console.log("LA BD A ETE PEUPLEE, TOUS LES ASSIGNMENTS AJOUTES, ON RE-AFFICHE LA LISTE");
+        this.spinner.hide();
+        this.router.navigate(["/home"], {replaceUrl:true});
+      })
   }
 }

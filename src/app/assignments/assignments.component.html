@@ -1,5 +1,11 @@
-<mat-card>
+<div class="example-loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<mat-card class="example-container mat-elevation-z1">
   <main class="container">
+    <ngx-spinner [fullScreen]="true" size="medium" style="color: white">
+      <p>En cours de chargement</p>
+    </ngx-spinner>
     <div class="top-bar">
       <div>
         <mat-form-field>
@@ -12,15 +18,12 @@
         <a routerLink="/add" style="margin-right: 10px;">
           <button mat-raised-button color="basic">Ajouter un assignment</button>
         </a>
-        <button mat-raised-button color="primary" title="Peupler la base de données">
+        <button mat-raised-button color="primary" (click)="peuplerBD()" title="Peupler la base de données">
           <mat-icon>vertical_align_bottom</mat-icon>
         </button>
       </div>
     </div>
     <mat-tab-group #tabgroup (selectedTabChange)="onTabClick($event)">
-      <ngx-spinner [fullScreen]="false" size="medium" style="color: white">
-        <p>En cours de chargement</p>
-      </ngx-spinner>
       <mat-tab label="Devoirs non-rendus">
         <ng-template matTabContent>
           <h1>Liste des assignments non-rendus</h1>

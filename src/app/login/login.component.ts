@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
+import { SnackbarService } from '../shared/snackbar.service';
 import { GetErrorMessage, MatchPassordValidator, NotOnlySpaceValidator } from '../utils/value-control';
 import { User } from './user.model';
 
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private snackBarService: SnackbarService,
     private snackBar: MatSnackBar) {
       if(this.authService.isLoggedIn()) {
         this.router.navigate(["/home"]);
@@ -60,16 +62,15 @@ export class LoginComponent implements OnInit {
     user.password = formValue.password;
     this.authService.signup(user).subscribe(response => {
       this.snackBar.open(response.message, null, {
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
         duration: 500,
         panelClass: ['success-snackbar']
       }).afterDismissed().subscribe(() => this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/']);
       }));
     }, responseError => {
-      this.snackBar.open(responseError.error.message, null, {
-        duration: 1000,
-        panelClass: ['error-snackbar']
-      });
+      this.snackBarService.openSnackbar(responseError.error.message, true);
     })
 
     // appel api du back
@@ -81,10 +82,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', response.token);
       this.router.navigate(["/home"]);
     }, responseError => {
-      this.snackBar.open(responseError.error.message, null, {
-        duration: 1000,
-        panelClass: ['error-snackbar']
-      });
+      this.snackBarService.openSnackbar(responseError.error.message, true);
     })
   }
 }

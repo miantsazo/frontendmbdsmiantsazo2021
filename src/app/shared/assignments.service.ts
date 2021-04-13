@@ -78,9 +78,12 @@ export class AssignmentsService {
     assignmentsGeneres.forEach((a) => {
       let nouvelAssignment = new Assignment();
       nouvelAssignment.nom = a.nom;
-      nouvelAssignment.id = a.id;
+      nouvelAssignment.auteur = a.auteur;
       nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
       nouvelAssignment.rendu = a.rendu;
+      nouvelAssignment.matiere = a.matiere;
+      nouvelAssignment.note = a.note;
+      nouvelAssignment.remarques = a.remarques;
 
       this.addAssignment(nouvelAssignment).subscribe((reponse) => {
         console.log(reponse.message);
@@ -96,10 +99,14 @@ export class AssignmentsService {
     assignmentsGeneres.forEach((a) => {
       const nouvelAssignment = new Assignment();
 
-      nouvelAssignment.id = a.id;
       nouvelAssignment.nom = a.nom;
       nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
       nouvelAssignment.rendu = a.rendu;
+      nouvelAssignment.remarques = a.remarques;
+      nouvelAssignment.matiere = a.matiere;
+      nouvelAssignment.note = a.note;
+      nouvelAssignment.rendu = a.rendu;
+      nouvelAssignment.auteur = a.auteur;
 
       appelsVersAddAssignment.push(this.addAssignment(nouvelAssignment));
     });
