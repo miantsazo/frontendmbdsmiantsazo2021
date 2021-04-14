@@ -67,3 +67,7 @@
   margin-bottom: 40px;
   height: 40px;
 }
+
+img {
+  border-radius: 50%;
+}
