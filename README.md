@@ -1,27 +1,38 @@
 # AssignmentApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.3.
+Ce repository contient les codes sources de l'application front-end qui comprendra :
+- une page de login pour accéder à l'application
+- une page d'inscription si vous n'avez pas encore de compte
+- Un menu pour gérer les assignments
+- Un menu pour gérer les matières
+- Un menu pour gérer les profs
 
-## Development server
+# Général 
+Utilisation de JWT pour la gestion de l'authentification
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Menu Assignments
+Deux onglets contenant respectivement :
+- Une liste paginée des assignments rendus
+- Une liste paginée des assignments non rendus
+- Une recherche par rapport au nom de l'assignment
 
-## Code scaffolding
+Ajout d'un assignment via un Stepper en 3 étapes
+- Etape 1 : informations sur le devoir
+- Etape 2 : rendu
+- Etpae 3 : confirmation des données
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Détails d'un assignment en cliquant sur un élément de la liste
+- Rendre un devoir en cochant rendu et en donnant une note à l'élève
 
-## Build
+Suppression d'un assignment
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+# Menu Matières
+- Liste des matières dans un mat-table
+- Ajout d'une nouvelle matière via un popup. La liste des professeurs sera récupérée dans la base et affichée dans un choice list
+- Supression d'une matière
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Menu Profs
+- Liste des profs dans un mat-table
+- Ajout d'un nouveau prof via un popup. Upload de l'image du professeur
+- Suppression d'un prof
+-   Un prof lié à une matière ne peut être supprimé
