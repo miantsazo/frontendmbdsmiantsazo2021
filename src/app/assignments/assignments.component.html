@@ -39,7 +39,35 @@
     <mat-tab-group #tabgroup (selectedTabChange)="onTabClick($event)">
       <mat-tab label="Devoirs non-rendus">
         <ng-template matTabContent>
-          <h1>Liste des assignments non-rendus</h1>
+          <div class="top-pagination">
+            <h1>Liste des assignments non-rendus</h1>
+
+            <nav class="pagination-button">
+              <button mat-icon-button color="primary" (click)="premierePage()">
+                <mat-icon>skip_previous</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="primary"
+                [disabled]="!hasPrevPage"
+                (click)="pagePrecedente()"
+              >
+                <mat-icon>navigate_before</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="primary"
+                [disabled]="!hasNextPage"
+                (click)="pageSuivante()"
+              >
+                <mat-icon>navigate_next</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="dernierePage()">
+                <mat-icon>skip_next</mat-icon>
+              </button>
+            </nav>
+          </div>
+
           <mat-divider></mat-divider>
 
           <mat-list *ngFor="let a of assignments">
@@ -108,7 +136,34 @@
       </mat-tab>
       <mat-tab label="Devoirs rendus">
         <ng-template matTabContent>
-          <h1>Liste des assignments rendus</h1>
+          <div class="top-pagination">
+            <h1>Liste des assignments rendus</h1>
+
+            <nav class="pagination-button">
+              <button mat-icon-button color="primary" (click)="premierePage()">
+                <mat-icon>skip_previous</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="primary"
+                [disabled]="!hasPrevPage"
+                (click)="pagePrecedente()"
+              >
+                <mat-icon>navigate_before</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="primary"
+                [disabled]="!hasNextPage"
+                (click)="pageSuivante()"
+              >
+                <mat-icon>navigate_next</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="dernierePage()">
+                <mat-icon>skip_next</mat-icon>
+              </button>
+            </nav>
+          </div>
           <mat-divider></mat-divider>
 
           <mat-list *ngFor="let a of assignments">

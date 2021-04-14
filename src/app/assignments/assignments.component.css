@@ -3,6 +3,11 @@
   flex-direction: column;
 }
 
+.top-pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
 .example-container {
   position: relative;
   min-height: 200px;
@@ -25,11 +30,16 @@
   align-self: flex-end;
 }
 
+.pagination-button,
 .pagination {
   display: flex;
   justify-content: space-between;
   float: right;
   align-self: stretch;
+}
+
+.pagination-button {
+  margin-top: 20px;
 }
 
 .link_assignment {
