@@ -10,15 +10,28 @@
       <div>
         <mat-form-field>
           <mat-label>Recherche</mat-label>
-          <input class="input-search" matInput placeholder="Ex. Data" #input (keydown.enter)="applyFilter($event.target.value)"/>
+          <input
+            class="input-search"
+            matInput
+            placeholder="Ex. Data"
+            #input
+            (keydown.enter)="applyFilter($event.target.value)"
+          />
         </mat-form-field>
       </div>
 
       <div class="ajouterBtn">
-        <a routerLink="/add" style="margin-right: 10px;">
-          <button mat-raised-button color="basic">Ajouter un assignment</button>
+        <a routerLink="/add" style="margin-right: 10px">
+          <button mat-raised-button color="basic">
+            <mat-icon>note_add</mat-icon>Ajouter un assignment
+          </button>
         </a>
-        <button mat-raised-button color="primary" (click)="peuplerBD()" title="Peupler la base de données">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="peuplerBD()"
+          title="Peupler la base de données"
+        >
           <mat-icon>vertical_align_bottom</mat-icon>Peupler BD
         </button>
       </div>
@@ -31,8 +44,11 @@
 
           <mat-list *ngFor="let a of assignments">
             <nav>
-              <a routerLink="/assignment/{{ a._id }}" class="link_assignment"
-                title="Cliquez pour les détails {{ a.nom }}">
+              <a
+                routerLink="/assignment/{{ a._id }}"
+                class="link_assignment"
+                title="Cliquez pour les détails {{ a.nom }}"
+              >
                 <!-- <mat-list-item> -->
                 <div class="header_assignment_details">
                   <h4 *ngIf="a.rendu; else nonsoumis" appRendu>
@@ -43,7 +59,10 @@
 
                   <div class="prof_display">
                     <p>{{ a.prof[0]?.prenom + " " + a.prof[0]?.nom }}</p>
-                    <img src="{{backendUrl + '/uploads/' + a.prof[0]?.photoUrl}}" width="50" />
+                    <img
+                      src="{{ backendUrl + '/uploads/' + a.prof[0]?.photoUrl }}"
+                      width="50"
+                    />
                   </div>
                 </div>
                 <p>Matière : {{ a.matiere[0]?.libelle }}</p>
@@ -65,10 +84,20 @@
             <button mat-icon-button color="primary" (click)="premierePage()">
               <mat-icon>skip_previous</mat-icon>
             </button>
-            <button mat-icon-button color="primary" [disabled]="!hasPrevPage" (click)="pagePrecedente()">
+            <button
+              mat-icon-button
+              color="primary"
+              [disabled]="!hasPrevPage"
+              (click)="pagePrecedente()"
+            >
               <mat-icon>navigate_before</mat-icon>
             </button>
-            <button mat-icon-button color="primary" [disabled]="!hasNextPage" (click)="pageSuivante()">
+            <button
+              mat-icon-button
+              color="primary"
+              [disabled]="!hasNextPage"
+              (click)="pageSuivante()"
+            >
               <mat-icon>navigate_next</mat-icon>
             </button>
             <button mat-icon-button color="primary" (click)="dernierePage()">
@@ -84,8 +113,11 @@
 
           <mat-list *ngFor="let a of assignments">
             <nav>
-              <a routerLink="/assignment/{{ a._id }}" class="link_assignment"
-                title="Cliquez pour les détails {{ a.nom }}">
+              <a
+                routerLink="/assignment/{{ a._id }}"
+                class="link_assignment"
+                title="Cliquez pour les détails {{ a.nom }}"
+              >
                 <div class="header_assignment_details">
                   <h4 *ngIf="a.rendu; else nonsoumis" appRendu>
                     Exercice : {{ a.nom }}
@@ -95,7 +127,10 @@
 
                   <div class="prof_display">
                     <p>{{ a.prof[0]?.prenom + " " + a.prof[0]?.nom }}</p>
-                    <img src="{{backendUrl + '/uploads/' + a.prof[0]?.photoUrl}}" width="50" />
+                    <img
+                      src="{{ backendUrl + '/uploads/' + a.prof[0]?.photoUrl }}"
+                      width="50"
+                    />
                   </div>
                 </div>
                 <p>Matière : {{ a.matiere[0]?.libelle }}</p>
@@ -114,10 +149,20 @@
             <button mat-icon-button color="primary" (click)="premierePage()">
               <mat-icon>skip_previous</mat-icon>
             </button>
-            <button mat-icon-button color="primary" [disabled]="!hasPrevPage" (click)="pagePrecedente()">
+            <button
+              mat-icon-button
+              color="primary"
+              [disabled]="!hasPrevPage"
+              (click)="pagePrecedente()"
+            >
               <mat-icon>navigate_before</mat-icon>
             </button>
-            <button mat-icon-button color="primary" [disabled]="!hasNextPage" (click)="pageSuivante()">
+            <button
+              mat-icon-button
+              color="primary"
+              [disabled]="!hasNextPage"
+              (click)="pageSuivante()"
+            >
               <mat-icon>navigate_next</mat-icon>
             </button>
             <button mat-icon-button color="primary" (click)="dernierePage()">
